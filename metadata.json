@@ -1,0 +1,6 @@
+{
+  "name": "Native Evangelical School of Theology (NEST)",
+  "description": "Official institutional website for Native Evangelical School of Theology (NEST) - Theological Institution located in Mysore, Karnataka, India.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
