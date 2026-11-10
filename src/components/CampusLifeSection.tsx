@@ -11,6 +11,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { getAssetUrl, handleImageError } from '../utils/assetHelper';
 
 export const CampusLifeSection: React.FC = () => {
   const { currentLanguage, t } = useLanguage();
@@ -44,7 +45,7 @@ export const CampusLifeSection: React.FC = () => {
         te: 'ప్రతి ఉదయం మరియు సాయంత్రం, సెమినరీ సమాజం అంతా చాపెల్‌లో సమావేశమై దేశాల కొరకు ప్రార్థన, ఆరాధన మరియు వాక్య సందేశాన్ని వింటుంది.',
         ml: 'എല്ലാ ദിവസവും രാവിലെയും വൈകുന്നേരവും മുഴുവൻ സെമിനാരി കുടുംബവും ചാപ്പലിൽ ഒത്തുചേർന്ന് പ്രാർത്ഥനയിലും തിരുവചന പ്രസംഗത്തിലും പങ്കെടുക്കുന്നു.',
       },
-      image: '/assets/aistudio/chapel_d7e08b0f.webp',
+      image: getAssetUrl('assets/aistudio/chapel_d7e08b0f.webp', 'chapel'),
       alt: 'Seminary Chapel Worship Service at NEST',
       highlights: ['Daily Corporate Prayer', 'Intercession for India', 'Evening Expository Sermons'],
     },
@@ -74,7 +75,7 @@ export const CampusLifeSection: React.FC = () => {
         te: 'అర్హత కలిగిన అధ్యాపకుల ఆధ్వర్యంలో పరిశుద్ధ లేఖన గ్రీక్, హీబ్రూ, సిస్టమాటిక్ థియాలజీ మరియు సంఘ చరిత్ర తరగతి గదులలో లోతుగా బోధించబడతాయి.',
         ml: 'യോഗ്യരായ അധ്യാപകരുടെ കീഴിൽ ഗ്രീക്ക്, ഹീബ്രു, സിസ്റ്റമാറ്റിക് തിയോളജി, സഭാ ചരിത്രം എന്നിവ ക്ലാസ് മുറികളിൽ ആഴത്തിൽ പഠിപ്പിക്കുന്നു.',
       },
-      image: '/assets/aistudio/classroom_3ee27e65.webp',
+      image: getAssetUrl('assets/aistudio/classroom_3ee27e65.webp', 'classroom'),
       alt: 'Classroom Lecture at NEST Mysore',
       highlights: ['Greek & Hebrew Exegesis', 'Systematic Theology', 'Historical Orthodoxy'],
     },
@@ -104,7 +105,7 @@ export const CampusLifeSection: React.FC = () => {
         te: 'వివిధ రాష్ట్రాల నుండి వచ్చిన విద్యార్థులు విశాలమైన భోజనశాలలో పౌష్టికాహారం తింటూ ఆత్మీయ సాక్ష్యాలు మరియు సహవాసాన్ని పంచుకుంటారు.',
         ml: 'വിവിധ സംസ്ഥാനങ്ങളിൽ നിന്നുള്ള വിദ്യാർത്ഥികൾ ഡൈനിംഗ് ഹാളിൽ ഒരുമിച്ചു ഭക്ഷണം കഴിക്കുകയും സഹോദര കൂട്ടായ്മ പങ്കിടുകയും ചെയ്യുന്നു.',
       },
-      image: '/assets/aistudio/dinig_hall_3a8b4555.webp',
+      image: getAssetUrl('assets/aistudio/dinig_hall_3a8b4555.webp', 'dining'),
       alt: 'Seminary Dining Hall Community Fellowship',
       highlights: ['Spacious Dining Hall', 'Hostel Living in Mysore', 'Multilingual Brotherhood'],
     },
@@ -134,7 +135,7 @@ export const CampusLifeSection: React.FC = () => {
         te: 'ప్రిన్సిపాల్ రెవ. సంతోష్ కె. చాకో గారి ఆధ్వర్యంలో ప్రసంగాల తయారీ, కౌన్సెలింగ్ మరియు సంఘ పరిపాలనలో శిక్షణ పొందుతారు.',
         ml: 'പ്രിൻസിപ്പൽ റവ. സന്തോഷ് കെ. ചാക്കോയുടെ മാർഗനിർദേശത്തിൽ പ്രസംഗ കല, ബൈബിൾ കൗൺസിലിംഗ്, സഭാ ഭരണം എന്നിവ പരിശീലിക്കുന്നു.',
       },
-      image: '/assets/aistudio/5_81316861.webp',
+      image: getAssetUrl('assets/aistudio/5_81316861.webp', 'campus'),
       alt: '7th Graduation Convocation of NEST',
       highlights: ['Homiletics Workshops', 'Pastoral Counseling Lab', 'ATA India Degree Convocation'],
     },
@@ -164,7 +165,7 @@ export const CampusLifeSection: React.FC = () => {
         te: 'ఆత్మీయ ఉత్సాహంతో పాటు శారీరక ఆరోగ్యం. వారాంతాల్లో గ్రామాల్లో సువార్త పరిచర్య చేస్తూ, క్యాంపస్‌లో వాలీబాల్ మరియు క్రీడల్లో పాల్గొంటారు.',
         ml: 'ആത്മീയ ഉന്മേഷത്തോടൊപ്പം കായിക ആരോഗ്യവും. വാരാന്ത്യങ്ങളിൽ ഗ്രാമങ്ങളിൽ സുവിശേഷം പ്രസംഗിക്കുകയും കാമ്പസ് മൈതാനങ്ങളിൽ കളികളിൽ ഏർപ്പെടുകയും ചെയ്യുന്നു.',
       },
-      image: '/assets/aistudio/spots_00f2ae6c.webp',
+      image: getAssetUrl('assets/aistudio/spots_00f2ae6c.webp', 'campus'),
       alt: 'Students sports and outreach recreation at NEST',
       highlights: ['Weekend Village Outreach', 'Campus Sports Ground', 'Healthy Mind & Body'],
     },
@@ -229,6 +230,7 @@ export const CampusLifeSection: React.FC = () => {
                 <img
                   src={current.image}
                   alt={current.alt}
+                  onError={(e) => handleImageError(e, 'campus')}
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>

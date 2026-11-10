@@ -12,6 +12,7 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import { useAdminData } from '../context/AdminDataContext';
 import { FacultyMember } from '../types';
+import { getAssetUrl, handleImageError } from '../utils/assetHelper';
 
 interface FacultySectionProps {
   onOpenApplyModal?: () => void;
@@ -59,8 +60,9 @@ export const FacultySection: React.FC<FacultySectionProps> = ({ onOpenApplyModal
               <div className="relative">
                 <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-2xl overflow-hidden border-4 border-[#D4AF37] shadow-2xl bg-black">
                   <img
-                    src="/assets/aistudio/pricipal_7db520a9.webp"
+                    src={getAssetUrl('assets/aistudio/pricipal_7db520a9.webp', 'principal')}
                     alt="Rev. Santhosh K. Chacko, Principal"
+                    onError={(e) => handleImageError(e, 'principal')}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
@@ -154,7 +156,8 @@ export const FacultySection: React.FC<FacultySectionProps> = ({ onOpenApplyModal
               const name = currentLanguage === 'kn' ? (member.nameKn || member.name) : member.name;
               const title = currentLanguage === 'kn' ? (member.titleKn || member.title) : member.title;
               const qualification = currentLanguage === 'kn' ? (member.qualificationKn || member.qualification) : member.qualification;
-              const photoUrl = member.photo || (member.id === 'santhosh-chacko' ? '/assets/aistudio/pricipal_7db520a9.webp' : '/assets/aistudio/techers_e3355ac8.webp');
+              const rawPhoto = member.photo || (member.id === 'santhosh-chacko' ? 'assets/aistudio/pricipal_7db520a9.webp' : 'assets/aistudio/techers_e3355ac8.webp');
+              const photoUrl = getAssetUrl(rawPhoto, 'faculty');
 
               return (
                 <div
@@ -166,6 +169,7 @@ export const FacultySection: React.FC<FacultySectionProps> = ({ onOpenApplyModal
                     <img
                       src={photoUrl}
                       alt={name}
+                      onError={(e) => handleImageError(e, 'faculty')}
                       className="w-full h-full object-cover object-top"
                     />
                   </div>

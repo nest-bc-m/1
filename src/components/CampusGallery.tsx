@@ -17,6 +17,7 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import { useAdminData } from '../context/AdminDataContext';
 import { GalleryPhotoItem } from '../types';
+import { getAssetUrl, handleImageError } from '../utils/assetHelper';
 
 export const CampusGallery: React.FC = () => {
   const { currentLanguage } = useLanguage();
@@ -244,8 +245,9 @@ export const CampusGallery: React.FC = () => {
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900 border-b border-[#D1C7B7]">
                 
                 <img
-                  src={photo.imageUrl}
+                  src={getAssetUrl(photo.imageUrl, 'campus')}
                   alt={currentLanguage === 'kn' ? photo.titleKn : photo.titleEn}
+                  onError={(e) => handleImageError(e, 'campus')}
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -349,8 +351,9 @@ export const CampusGallery: React.FC = () => {
             {/* Modal Image Area with Navigation Buttons */}
             <div className="relative bg-black flex items-center justify-center flex-grow overflow-hidden min-h-[300px] max-h-[62vh]">
               <img
-                src={selectedPhoto.imageUrl}
+                src={getAssetUrl(selectedPhoto.imageUrl, 'campus')}
                 alt={currentLanguage === 'kn' ? selectedPhoto.titleKn : selectedPhoto.titleEn}
+                onError={(e) => handleImageError(e, 'campus')}
                 className="max-h-full max-w-full object-contain mx-auto"
               />
 

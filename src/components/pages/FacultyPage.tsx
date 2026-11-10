@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAdminData } from '../../context/AdminDataContext';
+import { getAssetUrl, handleImageError } from '../../utils/assetHelper';
 
 interface FacultyPageProps {
   onNavigate: (page: 'home' | 'about' | 'programs' | 'faculty' | 'campus' | 'admissions' | 'contact') => void;
@@ -57,8 +58,9 @@ export const FacultyPage: React.FC<FacultyPageProps> = ({ onNavigate, onOpenAppl
             <div className="lg:col-span-4 flex flex-col items-center text-center space-y-4">
               <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-lg overflow-hidden border-2 border-stone-300 shadow bg-stone-100">
                 <img
-                  src="/assets/aistudio/pricipal_7db520a9.webp"
+                  src={getAssetUrl('assets/aistudio/pricipal_7db520a9.webp', 'principal')}
                   alt="Rev. Santhosh K. Chacko, Principal"
+                  onError={(e) => handleImageError(e, 'principal')}
                   className="w-full h-full object-cover object-top"
                 />
               </div>
@@ -176,8 +178,9 @@ export const FacultyPage: React.FC<FacultyPageProps> = ({ onNavigate, onOpenAppl
               <div className="flex items-start gap-4">
                 <div className="w-20 h-20 rounded bg-stone-100 overflow-hidden border border-stone-300 shrink-0">
                   <img
-                    src="/assets/aistudio/pricipal_7db520a9.webp"
+                    src={getAssetUrl('assets/aistudio/pricipal_7db520a9.webp', 'principal')}
                     alt="Rev. Santhosh K. Chacko"
+                    onError={(e) => handleImageError(e, 'principal')}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
@@ -199,8 +202,9 @@ export const FacultyPage: React.FC<FacultyPageProps> = ({ onNavigate, onOpenAppl
               <div className="flex items-start gap-4">
                 <div className="w-20 h-20 rounded bg-stone-100 overflow-hidden border border-stone-300 shrink-0">
                   <img
-                    src="/assets/aistudio/techers_e3355ac8.webp"
+                    src={getAssetUrl('assets/aistudio/techers_e3355ac8.webp', 'faculty')}
                     alt="Resident Teaching Faculty"
+                    onError={(e) => handleImageError(e, 'faculty')}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>

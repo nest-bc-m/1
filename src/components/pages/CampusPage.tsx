@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAdminData } from '../../context/AdminDataContext';
+import { getAssetUrl, handleImageError } from '../../utils/assetHelper';
 
 interface CampusPageProps {
   onNavigate: (page: 'home' | 'about' | 'programs' | 'faculty' | 'campus' | 'admissions' | 'contact') => void;
@@ -153,8 +154,9 @@ export const CampusPage: React.FC<CampusPageProps> = ({ onNavigate, onOpenApplyM
               >
                 <div className="relative aspect-[4/3] bg-stone-200 overflow-hidden">
                   <img
-                    src={photo.imageUrl}
+                    src={getAssetUrl(photo.imageUrl, 'campus')}
                     alt={photo.titleEn}
+                    onError={(e) => handleImageError(e, 'campus')}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102"
                   />
                   <div className="absolute top-2 right-2 bg-stone-900/60 text-white p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
@@ -237,8 +239,9 @@ export const CampusPage: React.FC<CampusPageProps> = ({ onNavigate, onOpenApplyM
           >
             <div className="relative bg-black aspect-[16/10] sm:aspect-[16/9] flex items-center justify-center">
               <img
-                src={selectedPhoto.imageUrl}
+                src={getAssetUrl(selectedPhoto.imageUrl, 'campus')}
                 alt={selectedPhoto.titleEn}
+                onError={(e) => handleImageError(e, 'campus')}
                 className="max-h-full max-w-full object-contain"
               />
               <button

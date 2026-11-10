@@ -2,6 +2,7 @@ import React from 'react';
 import { Award, ShieldCheck, CheckCircle2, ExternalLink, GraduationCap, Mail, Phone, MapPin } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAdminData } from '../context/AdminDataContext';
+import { getAssetUrl, handleImageError } from '../utils/assetHelper';
 
 interface AccreditationSectionProps {
   onOpenApplyModal: () => void;
@@ -194,8 +195,9 @@ export const AccreditationSection: React.FC<AccreditationSectionProps> = ({ onOp
               <div className="flex items-center gap-3.5 pb-4 border-b border-white/20">
                 <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#D4AF37] flex-shrink-0 shadow-md bg-black">
                   <img
-                    src="/assets/aistudio/pricipal_7db520a9.webp"
+                    src={getAssetUrl('assets/aistudio/pricipal_7db520a9.webp', 'principal')}
                     alt={t('principalName')}
+                    onError={(e) => handleImageError(e, 'principal')}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>

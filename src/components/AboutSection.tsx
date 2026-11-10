@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { NestLogo } from './NestLogo';
 import { useLanguage } from '../context/LanguageContext';
+import { getAssetUrl, handleImageError } from '../utils/assetHelper';
 
 export const AboutSection: React.FC = () => {
   const { currentLanguage, t } = useLanguage();
@@ -218,8 +219,9 @@ export const AboutSection: React.FC = () => {
               <div className="relative">
                 <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border-4 border-[#D4AF37] shadow-2xl bg-black">
                   <img
-                    src="/assets/aistudio/pricipal_7db520a9.webp"
+                    src={getAssetUrl('assets/aistudio/pricipal_7db520a9.webp', 'principal')}
                     alt={t('principalName')}
+                    onError={(e) => handleImageError(e, 'principal')}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>

@@ -1,4 +1,5 @@
 import { AcademicProgram, StatementOfFaithArticle, FacultyMember } from '../types';
+import { getAssetUrl } from '../utils/assetHelper';
 
 export const INSTITUTION_INFO = {
   name: "Native Evangelical School of Theology",
@@ -504,7 +505,7 @@ export const FACULTY_MEMBERS: FacultyMember[] = [
     qualificationKn: "ಎಂ.ಟಿ.ಎಚ್, ಬಿ.ಡಿ, ಬಿ.ಟಿ.ಎಚ್",
     department: "Executive Leadership",
     departmentKn: "ಆಡಳಿತ & ನಾಯಕತ್ವ",
-    photo: "/assets/aistudio/pricipal_7db520a9.webp"
+    photo: getAssetUrl('assets/aistudio/pricipal_7db520a9.webp', 'principal')
   },
   {
     id: "teaching-faculty",
@@ -518,7 +519,7 @@ export const FACULTY_MEMBERS: FacultyMember[] = [
     qualificationKn: "ATA ಮಾನ್ಯತೆ ಪಡೆದ ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆಗಳು",
     department: "Academic Faculty",
     departmentKn: "ಶೈಕ್ಷಣಿಕ ಅಧ್ಯಾಪಕ ವೃಂದ",
-    photo: "/assets/aistudio/techers_e3355ac8.webp"
+    photo: getAssetUrl('assets/aistudio/techers_e3355ac8.webp', 'faculty')
   }
 ];
 

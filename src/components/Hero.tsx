@@ -3,6 +3,7 @@ import { BookOpen, GraduationCap, Phone, ArrowRight, CheckCircle2, Award, Langua
 import { NestLogo } from './NestLogo';
 import { useLanguage } from '../context/LanguageContext';
 import { useAdminData } from '../context/AdminDataContext';
+import { getAssetUrl, handleImageError } from '../utils/assetHelper';
 
 interface HeroProps {
   onOpenApplyModal: () => void;
@@ -16,22 +17,22 @@ export const Hero: React.FC<HeroProps> = ({ onOpenApplyModal }) => {
   // Authentic campus photos slideshow items
   const heroSlides = [
     {
-      img: '/assets/aistudio/college_48f40f17.webp',
+      img: getAssetUrl('assets/aistudio/college_48f40f17.webp', 'college'),
       title: 'Academic Complex & Campus',
       sub: 'Modern Theological Lecture Facilities',
     },
     {
-      img: '/assets/aistudio/techers_e3355ac8.webp',
+      img: getAssetUrl('assets/aistudio/techers_e3355ac8.webp', 'faculty'),
       title: 'Resident Faculty & Leadership',
       sub: 'Scholarly Mentorship in Scripture',
     },
     {
-      img: '/assets/aistudio/chapel_d7e08b0f.webp',
+      img: getAssetUrl('assets/aistudio/chapel_d7e08b0f.webp', 'chapel'),
       title: 'Seminary Chapel & Devotion',
       sub: 'Daily Worship, Preaching & Prayer',
     },
     {
-      img: '/assets/aistudio/5_81316861.webp',
+      img: getAssetUrl('assets/aistudio/5_81316861.webp', 'campus'),
       title: '7th Graduation Convocation',
       sub: 'Conferring ATA Recognized Degrees',
     },
@@ -225,6 +226,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenApplyModal }) => {
                   <img
                     src={slide.img}
                     alt={slide.title}
+                    onError={(e) => handleImageError(e, 'campus')}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>

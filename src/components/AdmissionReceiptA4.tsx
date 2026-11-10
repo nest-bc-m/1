@@ -21,6 +21,7 @@ import { AdmissionRegistrationData } from '../types';
 import { formatReceiptDate, formatDOB, buildWhatsAppForwardMessage } from '../utils/admissionRegistration';
 import { INSTITUTION_INFO } from '../data/nestData';
 import { useLanguage } from '../context/LanguageContext';
+import { getAssetUrl, handleLogoError } from '../utils/assetHelper';
 
 interface AdmissionReceiptA4Props {
   data: AdmissionRegistrationData;
@@ -96,12 +97,10 @@ export const AdmissionReceiptA4: React.FC<AdmissionReceiptA4Props> = ({
           <div className="flex items-center gap-3">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-[#D4AF37] bg-[#1A365D] flex items-center justify-center p-1.5 shadow-sm flex-shrink-0">
               <img
-                src="/assets/aistudio/logo_9f1d35a7.jpg"
+                src={getAssetUrl('assets/aistudio/logo_9f1d35a7.jpg')}
                 alt="NEST Official Crest"
                 className="w-full h-full object-contain rounded-full"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = 'none';
-                }}
+                onError={handleLogoError}
               />
             </div>
 

@@ -33,6 +33,7 @@ import { useAdminData } from '../context/AdminDataContext';
 import { useLanguage } from '../context/LanguageContext';
 import { FacultyMember, AcademicProgram, GalleryPhotoItem, AnnouncementItem, AdmissionSubmission } from '../types';
 import { StudentRegistrationsDashboard } from './StudentRegistrationsDashboard';
+import { getAssetUrl, handleImageError } from '../utils/assetHelper';
 
 interface AdminPortalModalProps {
   isOpen: boolean;
@@ -272,7 +273,7 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
         descKn: photoForm.descKn || '',
         locationEn: photoForm.locationEn || 'Nagarthalli Campus, Mysore',
         locationKn: photoForm.locationKn || 'ನಾಗರಹಳ್ಳಿ ಕ್ಯಾಂಪಸ್, ಮೈಸೂರು',
-        imageUrl: photoForm.imageUrl || '/assets/aistudio/college_48f40f17.webp',
+        imageUrl: photoForm.imageUrl ? getAssetUrl(photoForm.imageUrl, 'college') : getAssetUrl('assets/aistudio/college_48f40f17.webp', 'college'),
         tagEn: photoForm.tagEn || 'Campus View',
         tagKn: photoForm.tagKn || 'ಕ್ಯಾಂಪಸ್ ನೋಟ',
       });
@@ -1453,8 +1454,9 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
                     >
                       <div className="relative aspect-[4/3] bg-black overflow-hidden">
                         <img
-                          src={photo.imageUrl}
+                          src={getAssetUrl(photo.imageUrl, 'campus')}
                           alt={photo.titleEn}
+                          onError={(e) => handleImageError(e, 'campus')}
                           className="w-full h-full object-cover"
                         />
                         <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/70 text-[9px] font-bold text-[#D4AF37] uppercase">

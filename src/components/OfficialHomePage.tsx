@@ -17,6 +17,7 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import { useAdminData } from '../context/AdminDataContext';
 import { NestLogo } from './NestLogo';
+import { getAssetUrl, handleImageError } from '../utils/assetHelper';
 
 interface OfficialHomePageProps {
   onNavigate: (page: 'home' | 'about' | 'programs' | 'faculty' | 'campus' | 'admissions' | 'contact') => void;
@@ -35,22 +36,22 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
   // Curated campus preview photographs (authentic institutional facilities)
   const campusPreviews = [
     {
-      img: '/assets/aistudio/college_48f40f17.webp',
+      img: getAssetUrl('assets/aistudio/college_48f40f17.webp', 'college'),
       title: currentLanguage === 'kn' ? 'ಶೈಕ್ಷಣಿಕ ಸಂಕೀರ್ಣ ಮತ್ತು ಮುಖ್ಯ ಕಟ್ಟಡ' : 'Academic Complex & Main Building',
       caption: currentLanguage === 'kn' ? 'ನಾಗರಹಳ್ಳಿ, ಮೈಸೂರು' : 'Nagarthalli Campus, Mysore',
     },
     {
-      img: '/assets/aistudio/chapel_d7e08b0f.webp',
+      img: getAssetUrl('assets/aistudio/chapel_d7e08b0f.webp', 'chapel'),
       title: currentLanguage === 'kn' ? 'ಚಾಪೆಲ್ ಪ್ರಾರ್ಥನಾ ಮಂದಿರ' : 'Chapel of Prayer & Daily Worship',
       caption: currentLanguage === 'kn' ? 'ದೈನಂದಿನ ಆರಾಧನೆ ಮತ್ತು ಉಪವಾಸ ಪ್ರಾರ್ಥನೆ' : 'Daily Devotions, Preaching & Intercession',
     },
     {
-      img: '/assets/aistudio/classroom_3ee27e65.webp',
+      img: getAssetUrl('assets/aistudio/classroom_3ee27e65.webp', 'classroom'),
       title: currentLanguage === 'kn' ? 'ದೇವತಾಶಾಸ್ತ್ರ ಉಪನ್ಯಾಸ ಕೊಠಡಿಗಳು' : 'Theological Lecture Halls',
       caption: currentLanguage === 'kn' ? 'ಗ್ರೀಕ್, ಹೀಬ್ರೂ ಮತ್ತು ಬೈಬಲ್ ವ್ಯಾಖ್ಯಾನ' : 'Exegetical & Systematic Instruction',
     },
     {
-      img: '/assets/aistudio/dinig_hall_3a8b4555.webp',
+      img: getAssetUrl('assets/aistudio/dinig_hall_3a8b4555.webp', 'dining'),
       title: currentLanguage === 'kn' ? 'ವಿದ್ಯಾರ್ಥಿ ಭೋಜನಾಲಯ ಮತ್ತು ಸಹಭಾಗಿತ್ವ' : 'Dining Hall & Student Fellowship',
       caption: currentLanguage === 'kn' ? 'ವಸತಿಯುತ ವಿದ್ಯಾರ್ಥಿ ಸಮುದಾಯ' : 'Residential Student Cohort Community',
     },
@@ -296,8 +297,9 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             <div className="lg:col-span-5">
               <div className="relative rounded-lg overflow-hidden border border-stone-300 shadow-md bg-stone-100">
                 <img
-                  src="/assets/aistudio/college_48f40f17.webp"
+                  src={getAssetUrl('assets/aistudio/college_48f40f17.webp', 'college')}
                   alt="Native Evangelical School of Theology Campus Mysore"
+                  onError={(e) => handleImageError(e, 'college')}
                   className="w-full aspect-[4/3] object-cover"
                 />
                 <div className="p-4 bg-white border-t border-stone-200 space-y-1">
@@ -563,6 +565,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                   <img
                     src={facility.img}
                     alt={facility.title}
+                    onError={(e) => handleImageError(e, 'campus')}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102"
                   />
                 </div>
@@ -613,8 +616,9 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               <div className="md:col-span-4 flex flex-col items-center text-center space-y-3">
                 <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-lg overflow-hidden border-2 border-stone-300 shadow bg-stone-100">
                   <img
-                    src="/assets/aistudio/pricipal_7db520a9.webp"
+                    src={getAssetUrl('assets/aistudio/pricipal_7db520a9.webp', 'principal')}
                     alt="Rev. Santhosh K. Chacko, Principal"
+                    onError={(e) => handleImageError(e, 'principal')}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>

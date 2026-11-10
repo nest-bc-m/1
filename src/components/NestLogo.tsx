@@ -1,4 +1,5 @@
 import React from 'react';
+import { getAssetUrl, handleLogoError } from '../utils/assetHelper';
 
 export interface NestLogoProps {
   className?: string;
@@ -10,8 +11,8 @@ export interface NestLogoProps {
   variant?: 'transparent' | 'badge' | 'card' | 'seal';
 }
 
-// Exact official logo asset provided by user (/public/assets/aistudio/logo_9f1d35a7.jpg)
-const OFFICIAL_LOGO_SRC = '/assets/aistudio/logo_9f1d35a7.jpg';
+// Official logo asset resolved with dynamic base URL
+const OFFICIAL_LOGO_SRC = getAssetUrl('assets/aistudio/logo_9f1d35a7.jpg');
 
 export const NestLogo: React.FC<NestLogoProps> = ({
   className = '',
@@ -46,13 +47,14 @@ export const NestLogo: React.FC<NestLogoProps> = ({
   const subTextClasses =
     textColor === 'light' ? 'text-[#D4AF37]' : 'text-[#1A365D]/80';
 
-  // Base Logo Image Element using the exact user-uploaded file format
+  // Base Logo Image Element using dynamic path and graceful SVG fallback onError
   const logoImage = (
     <img
       src={OFFICIAL_LOGO_SRC}
       alt="Native Evangelical School of Theology Official Logo"
       width={currentSize.w}
       height={currentSize.h}
+      onError={handleLogoError}
       className="object-contain flex-shrink-0 select-none"
       style={{
         width: `${currentSize.w}px`,
