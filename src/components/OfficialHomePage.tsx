@@ -141,13 +141,16 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                 </p>
               </div>
 
-              {/* Institutional Scripture Foundation (John 15:5) */}
+              {/* Institutional Scripture Foundation (2 Peter 1:3-4) */}
               <div className="bg-[#112440]/90 border-l-4 border-[#C5A059] p-5 rounded-r-lg max-w-2xl space-y-2">
+                <div className="flex items-center gap-2 text-xs font-sans font-bold text-[#D4AF37] tracking-wider uppercase">
+                  <span>{t('heroMotto')}</span>
+                </div>
                 <p className="font-serif italic text-sm sm:text-base text-slate-100 leading-relaxed">
                   &ldquo;{t('heroVerseQuote')}&rdquo;
                 </p>
                 <div className="flex items-center justify-between text-xs font-sans text-[#D4AF37] font-semibold pt-1">
-                  <span>John 15:5</span>
+                  <span>{t('heroMottoScripture')}</span>
                   <span className="text-slate-300 font-normal">{t('heroVerseFootnote')}</span>
                 </div>
               </div>
@@ -247,36 +250,34 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               
               <div className="flex items-center gap-2 text-xs font-sans font-bold text-[#1A365D] uppercase tracking-widest">
                 <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
-                <span>Institutional Background</span>
-                <span aria-hidden="true" className="text-stone-300">/</span>
-                <span>Established in Mysore</span>
+                <span>{t('introBadge')}</span>
               </div>
 
               <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A365D] leading-tight text-balance">
-                Theological Education Rooted in Scripture and Committed to Pastoral Formation
+                {t('introHeading')}
               </h2>
 
               <div className="space-y-4 text-stone-700 text-sm sm:text-base leading-relaxed font-sans max-w-2xl">
                 <p>
-                  Native Evangelical School of Theology (NEST) was established in Mysore, Karnataka, to address the profound need for solid, Bible-centered theological education. Operating in full compliance with the academic and ministerial standards of the <strong>Asia Theological Association India (ATA India)</strong>, the seminary provides a disciplined residential campus where academic research and personal spiritual growth progress together.
+                  {t('introParagraph1')}
                 </p>
                 <p>
-                  At NEST, we uphold the verbal inspiration and complete inerrancy of the Holy Scriptures. Our curriculum is structured around deep exegetical study of the Old and New Testaments, historical theology, systematic doctrine, and practical homiletics, ensuring every student develops both intellectual competence and devotional reverence.
+                  {t('introParagraph2')}
                 </p>
               </div>
 
               {/* Unboxed Institutional Key Points */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-stone-200">
                 <div className="space-y-1">
-                  <h4 className="font-serif font-bold text-[#1A365D] text-sm">Biblical Fidelity</h4>
+                  <h4 className="font-serif font-bold text-[#1A365D] text-sm">{t('introPoint1Title')}</h4>
                   <p className="text-xs text-stone-600 leading-normal">
-                    Strict adherence to the 66 inspired books of the Bible as the final and sufficient authority for faith and practice.
+                    {t('introPoint1Desc')}
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <h4 className="font-serif font-bold text-[#1A365D] text-sm">Supervised Ministry</h4>
+                  <h4 className="font-serif font-bold text-[#1A365D] text-sm">{t('introPoint2Title')}</h4>
                   <p className="text-xs text-stone-600 leading-normal">
-                    Weekend rural preaching, discipleship classes, and church planting practicum across Karnataka villages.
+                    {t('introPoint2Desc')}
                   </p>
                 </div>
               </div>
@@ -286,7 +287,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                   onClick={() => onNavigate('about')}
                   className="text-xs font-sans font-bold text-[#1A365D] hover:text-[#C5A059] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <span>Read Full Institutional History &amp; Governance</span>
+                  <span>{t('readHistoryBtn')}</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -304,10 +305,12 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                 />
                 <div className="p-4 bg-white border-t border-stone-200 space-y-1">
                   <p className="font-serif font-bold text-stone-900 text-sm">
-                    Nagarthalli Campus, Mysore
+                    {currentLanguage === 'kn' ? 'ನಾಗರಹಳ್ಳಿ ಕ್ಯಾಂಪಸ್, ಮೈಸೂರು' : 'Nagarthalli Campus, Mysore'}
                   </p>
                   <p className="text-xs text-stone-500 font-sans">
-                    No. 133, Nagarthalli, Rayanakere Post, Jayapura Hobli, Mysore 570008, Karnataka
+                    {currentLanguage === 'kn'
+                      ? 'ನಂ. 133, ನಾಗರಹಳ್ಳಿ, ರಾಯನಕೆರೆ ಅಂಚೆ, ಜಯಪುರ ಹೋಬಳಿ, ಮೈಸೂರು 570008, ಕರ್ನಾಟಕ'
+                      : 'No. 133, Nagarthalli, Rayanakere Post, Jayapura Hobli, Mysore 570008, Karnataka'}
                   </p>
                 </div>
               </div>
@@ -327,13 +330,13 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
           <div className="max-w-2xl mx-auto text-center space-y-3">
             <div className="flex items-center justify-center gap-2 text-xs font-sans font-bold text-[#1A365D] uppercase tracking-widest">
               <Target className="w-4 h-4 text-[#C5A059]" />
-              <span>Foundational Ethos</span>
+              <span>{t('ethosBadge')}</span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A365D]">
-              Vision &amp; Mission Statements
+              {t('visionTitle')} &amp; {t('missionTitle')}
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 font-sans leading-relaxed">
-              Guiding our theological curriculum, daily chapel life, and ministerial training in Mysore.
+              {t('ethosSub')}
             </p>
           </div>
 
@@ -360,7 +363,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               </div>
 
               <div className="pt-4 border-t border-stone-200 text-xs font-sans text-stone-500">
-                <span>Key Mandate: Academic Excellence · Spiritual Integrity · Doctrinal Purity</span>
+                <span>{t('visionMandate')}</span>
               </div>
             </div>
 
@@ -385,7 +388,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               </div>
 
               <div className="pt-4 border-t border-stone-200 text-xs font-sans text-stone-500">
-                <span>Core Pillar: Exegesis · Devotion · Practical Field Ministry</span>
+                <span>{t('missionMandate')}</span>
               </div>
             </div>
 
@@ -396,7 +399,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               onClick={() => onNavigate('about')}
               className="text-xs font-sans font-bold text-[#1A365D] hover:text-[#C5A059] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <span>Examine our Full Statement of Faith &amp; Doctrinal Basis</span>
+              <span>{t('statementOfFaithLink')}</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -415,15 +418,15 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-xs font-sans font-bold text-[#1A365D] uppercase tracking-widest">
                 <BookOpen className="w-4 h-4 text-[#C5A059]" />
-                <span>Curriculum Overview</span>
+                <span>{t('programsBadge')}</span>
                 <span aria-hidden="true" className="text-stone-400">/</span>
                 <span>Asia Theological Association Accredited</span>
               </div>
               <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A365D]">
-                Academic Programs &amp; Degrees
+                {t('programsHeading')}
               </h2>
               <p className="text-xs sm:text-sm text-stone-600 font-sans max-w-2xl">
-                Accredited undergraduate, graduate, and modular distance theological curricula structured for aspiring pastors and Christian workers.
+                {t('programsPreviewSub')}
               </p>
             </div>
 
@@ -431,7 +434,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               onClick={() => onNavigate('programs')}
               className="px-4 py-2.5 bg-[#1A365D] hover:bg-[#204373] text-white text-xs font-sans font-bold uppercase tracking-wider rounded transition-colors inline-flex items-center gap-1.5 shrink-0 self-start sm:self-auto cursor-pointer"
             >
-              <span>Full Academic Curriculum</span>
+              <span>{t('navPrograms')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -450,7 +453,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                       {prog.level}
                     </span>
                     <h3 className="font-serif text-lg font-bold text-[#1A365D] mt-0.5 leading-snug">
-                      {prog.title}
+                      {currentLanguage === 'kn' ? (prog.titleKn || prog.title) : prog.title}
                     </h3>
                     <span className="font-mono text-xs text-stone-500 font-semibold">({prog.code})</span>
                   </div>
@@ -461,13 +464,13 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
 
                   <div className="pt-2 space-y-1.5 text-[11px] font-sans text-stone-600 border-t border-stone-100">
                     <div>
-                      <strong className="text-stone-800 font-semibold">Duration:</strong> {prog.duration}
+                      <strong className="text-stone-800 font-semibold">{t('programDurationLabel')}:</strong> {prog.duration}
                     </div>
                     <div>
-                      <strong className="text-stone-800 font-semibold">Format:</strong> {prog.mode}
+                      <strong className="text-stone-800 font-semibold">{t('programStudyFormatLabel')}:</strong> {prog.mode}
                     </div>
                     <div>
-                      <strong className="text-stone-800 font-semibold">Language:</strong> {prog.medium}
+                      <strong className="text-stone-800 font-semibold">{t('programMediumLabel')}:</strong> {prog.medium}
                     </div>
                   </div>
                 </div>
@@ -482,7 +485,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     }}
                     className="text-xs font-sans font-bold text-[#1A365D] hover:text-[#C5A059] inline-flex items-center gap-1 cursor-pointer"
                   >
-                    <span>View Syllabus</span>
+                    <span>{t('viewProgramDetailsBtn')}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                   </button>
 
@@ -496,7 +499,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     }}
                     className="text-xs font-sans font-bold text-[#C5A059] hover:underline cursor-pointer"
                   >
-                    Apply Now
+                    {t('navApplyNow')}
                   </button>
                 </div>
               </div>
@@ -505,16 +508,16 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
 
           <div className="p-4 bg-white border border-stone-300 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-sans text-stone-600">
             <div className="space-y-0.5 text-center sm:text-left">
-              <span className="font-bold text-stone-800">Distance Education &amp; Modular Study:</span>
+              <span className="font-bold text-stone-800">{t('distanceBoxTitle')}</span>
               <p className="text-stone-600">
-                Working pastors, church elders, and professionals can pursue accredited theological studies through external modular tracks.
+                {t('distanceBoxDesc')}
               </p>
             </div>
             <button
               onClick={() => onNavigate('programs')}
               className="text-xs font-bold text-[#1A365D] hover:text-[#C5A059] whitespace-nowrap cursor-pointer underline"
             >
-              Review Distance Education Options →
+              {t('distanceBoxLink')}
             </button>
           </div>
 
@@ -532,15 +535,15 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-xs font-sans font-bold text-[#1A365D] uppercase tracking-widest">
                 <MapPin className="w-4 h-4 text-[#C5A059]" />
-                <span>Campus &amp; Facilities</span>
+                <span>{t('galleryBadge')}</span>
                 <span aria-hidden="true" className="text-stone-300">/</span>
                 <span>Nagarthalli, Mysore</span>
               </div>
               <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A365D]">
-                Campus &amp; Residential Life
+                {t('galleryHeading')}
               </h2>
               <p className="text-xs sm:text-sm text-stone-600 font-sans max-w-xl">
-                A serene academic environment dedicated to prayer, focused study, and communal living in Mysore.
+                {t('galleryPreviewSub')}
               </p>
             </div>
 
@@ -548,7 +551,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               onClick={() => onNavigate('campus')}
               className="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-900 border border-stone-300 text-xs font-sans font-bold uppercase tracking-wider rounded transition-colors inline-flex items-center gap-1.5 shrink-0 self-start sm:self-auto cursor-pointer"
             >
-              <span>Explore Full Campus Gallery</span>
+              <span>{t('viewFullGalleryBtn')}</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#1A365D]" />
             </button>
           </div>
@@ -586,7 +589,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               onClick={() => onNavigate('campus')}
               className="text-xs font-sans font-bold text-[#1A365D] hover:text-[#C5A059] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <span>View Library, Hostel Accommodation, Chapel Schedule &amp; Sports Ground</span>
+              <span>{t('viewFullGalleryBtn')}</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -605,9 +608,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             
             <div className="flex items-center gap-2 text-xs font-sans font-bold text-[#1A365D] uppercase tracking-widest">
               <Quote className="w-4 h-4 text-[#C5A059]" />
-              <span>Leadership Address</span>
-              <span aria-hidden="true" className="text-stone-300">/</span>
-              <span>Principal&apos;s Welcome</span>
+              <span>{t('principalWelcomeBadge')}</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
@@ -624,10 +625,10 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                 </div>
                 <div className="space-y-0.5">
                   <h3 className="font-serif font-bold text-lg text-[#1A365D]">
-                    Rev. Santhosh K. Chacko
+                    {currentLanguage === 'kn' ? institutionInfo.principalKn : institutionInfo.principal}
                   </h3>
                   <p className="text-xs text-[#C5A059] font-sans font-bold">
-                    Principal &amp; Founder
+                    {currentLanguage === 'kn' ? 'ಪ್ರಾಂಶುಪಾಲರು & ಸಂಸ್ಥಾಪಕರು' : 'Principal & Founder'}
                   </p>
                   <p className="font-mono text-[11px] text-stone-500">
                     M.Th (New Testament), B.D, B.Th
@@ -638,10 +639,10 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
               {/* Principal Excerpt Prose (8 cols) */}
               <div className="md:col-span-8 space-y-4 text-stone-700 font-sans text-sm sm:text-base leading-relaxed">
                 <p className="italic font-serif text-stone-800 text-base sm:text-lg">
-                  &ldquo;Our commitment at Native Evangelical School of Theology is straightforward: to uphold the inerrant Word of God and nurture servants of Christ who minister with biblical clarity, moral integrity, and sacrificial love.&rdquo;
+                  {t('principalQuote')}
                 </p>
                 <p>
-                  Theological education is not an end in itself; it is the spiritual and ministerial discipline of learning to rightly divide the Word of truth. In a changing society, the church requires pastors and evangelists who are both firmly grounded in original biblical languages and thoroughly sensitive to the realities of local congregations across India.
+                  {t('principalPara2')}
                 </p>
 
                 <div className="pt-2 flex flex-wrap items-center gap-4">
@@ -649,7 +650,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     onClick={() => onNavigate('faculty')}
                     className="px-4 py-2 bg-[#1A365D] hover:bg-[#204373] text-white text-xs font-sans font-bold uppercase tracking-wider rounded transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                   >
-                    <span>Read Full Address &amp; Faculty Roster</span>
+                    <span>{t('readFacultyRosterBtn')}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
 
@@ -659,7 +660,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     rel="noopener noreferrer"
                     className="text-xs font-sans font-semibold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1"
                   >
-                    <span>WhatsApp Principal Desk</span>
+                    <span>{t('whatsappPrincipalDeskBtn')}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </div>
@@ -683,12 +684,12 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
           <div className="max-w-3xl mx-auto text-center space-y-3">
             <div className="flex items-center justify-center gap-2 text-xs font-sans font-bold text-[#1A365D] uppercase tracking-widest">
               <GraduationCap className="w-4 h-4 text-[#C5A059]" />
-              <span>Academic Year 2026–2027</span>
+              <span>{t('academicCalendarBadge')}</span>
               <span aria-hidden="true" className="text-stone-300">/</span>
               <span>Intake Open</span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1A365D]">
-              Admissions &amp; Campus Office
+              {t('campusContactDeskTitle')}
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 font-sans leading-relaxed">
               Applications are reviewed on a rolling basis. Both regular on-campus residential enrollment and distance education registrations are accepted.
@@ -700,7 +701,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             {/* Left 6 Columns: Admission Procedure Overview */}
             <div className="lg:col-span-6 bg-[#FBF9F5] border border-stone-200 rounded-lg p-6 sm:p-8 space-y-5">
               <h3 className="font-serif text-lg sm:text-xl font-bold text-[#1A365D]">
-                Application Procedure &amp; Requirements
+                {t('admProcTitle')}
               </h3>
 
               <div className="space-y-3.5 text-xs sm:text-sm font-sans text-stone-700">
@@ -709,9 +710,9 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     1
                   </div>
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Online Registration Form</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('admProcStep1Title')}</strong>
                     <span className="text-stone-600">
-                      Submit personal, educational, church endorsement, and program details through the online registration portal.
+                      {t('admProcStep1Desc')}
                     </span>
                   </div>
                 </div>
@@ -721,9 +722,9 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     2
                   </div>
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Automatic A4 Printable Receipt</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('admProcStep2Title')}</strong>
                     <span className="text-stone-600">
-                      Upon submission, download your formatted A4 application receipt bearing your unique reference (e.g. NEST-2026-XXXX).
+                      {t('admProcStep2Desc')}
                     </span>
                   </div>
                 </div>
@@ -733,9 +734,9 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     3
                   </div>
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Church Pastoral Recommendation</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('admProcStep3Title')}</strong>
                     <span className="text-stone-600">
-                      Provide a confidential recommendation from your home church pastor affirming your Christian testimony and ministry calling.
+                      {t('admProcStep3Desc')}
                     </span>
                   </div>
                 </div>
@@ -745,9 +746,9 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     4
                   </div>
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Interview &amp; Enrollment Confirmation</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('admProcStep4Title')}</strong>
                     <span className="text-stone-600">
-                      A faculty interview (in-person or telephone/online for distant candidates) confirms admission and hostel allocation.
+                      {t('admProcStep4Desc')}
                     </span>
                   </div>
                 </div>
@@ -759,14 +760,14 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                   className="px-5 py-2.5 bg-[#D4AF37] text-[#1A365D] hover:bg-stone-900 hover:text-white font-sans font-bold text-xs uppercase tracking-wider rounded transition-colors inline-flex items-center gap-2 cursor-pointer shadow-sm"
                 >
                   <GraduationCap className="w-4 h-4" />
-                  <span>Register Online Now</span>
+                  <span>{t('registerOnlineNowBtn')}</span>
                 </button>
 
                 <button
                   onClick={onOpenApplyModal}
                   className="px-4 py-2.5 border border-stone-300 hover:bg-white text-stone-800 font-sans font-semibold text-xs uppercase tracking-wider rounded transition-colors cursor-pointer"
                 >
-                  Quick Inquiry
+                  {t('quickInquiryBtn')}
                 </button>
               </div>
 
@@ -775,14 +776,14 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             {/* Right 6 Columns: Contact Details & Office Hours */}
             <div className="lg:col-span-6 bg-white border border-stone-300 rounded-lg p-6 sm:p-8 space-y-5">
               <h3 className="font-serif text-lg sm:text-xl font-bold text-[#1A365D]">
-                Campus Contact Desk
+                {t('campusContactDeskTitle')}
               </h3>
 
               <div className="space-y-4 text-xs sm:text-sm font-sans text-stone-700">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-[#C5A059] shrink-0 mt-1" />
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Campus Address:</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('campusAddressLabel')}</strong>
                     <span>No. 133, Nagarthalli, Rayanakere P. O, Jayapura Hobli, Mysore 570008, Karnataka, India</span>
                   </div>
                 </div>
@@ -790,7 +791,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                 <div className="flex items-start gap-3">
                   <Phone className="w-4 h-4 text-[#C5A059] shrink-0 mt-1" />
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Admissions Hotline &amp; Principal Desk:</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('admissionsHotlineLabel')}</strong>
                     <a href={`tel:${institutionInfo.phone}`} className="text-[#1A365D] font-mono font-bold hover:underline">
                       {institutionInfo.phoneFormatted}
                     </a>
@@ -800,7 +801,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                 <div className="flex items-start gap-3">
                   <Mail className="w-4 h-4 text-[#C5A059] shrink-0 mt-1" />
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Official Email:</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('officialEmailLabel')}</strong>
                     <a href={`mailto:${institutionInfo.email}`} className="text-[#1A365D] hover:underline">
                       {institutionInfo.email}
                     </a>
@@ -810,8 +811,8 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                 <div className="flex items-start gap-3">
                   <Clock className="w-4 h-4 text-[#C5A059] shrink-0 mt-1" />
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Office Hours:</strong>
-                    <span>Monday through Saturday: 8:30 AM – 5:30 PM (IST)</span>
+                    <strong className="text-stone-900 block font-semibold">{t('officeHoursLabel')}</strong>
+                    <span>{t('officeHoursValue')}</span>
                   </div>
                 </div>
               </div>
@@ -822,7 +823,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                   className="px-5 py-2.5 bg-[#1A365D] hover:bg-[#204373] text-white font-sans font-bold text-xs uppercase tracking-wider rounded transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <MapPin className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span>View Travel &amp; Transit Directions</span>
+                  <span>{t('viewDirectionsBtn')}</span>
                 </button>
 
                 <a
@@ -830,7 +831,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                   className="px-4 py-2.5 border border-stone-300 hover:bg-stone-50 text-stone-800 font-sans font-semibold text-xs uppercase tracking-wider rounded transition-colors inline-flex items-center gap-1.5"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#C5A059]" />
-                  <span>Call Office</span>
+                  <span>{t('contactBtnDirectCall')}</span>
                 </a>
               </div>
 

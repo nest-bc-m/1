@@ -24,19 +24,21 @@ export const FacultyPage: React.FC<FacultyPageProps> = ({ onNavigate, onOpenAppl
       <section className="bg-[#1A365D] text-white border-b-4 border-[#C5A059] py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex items-center gap-2 text-xs font-sans text-slate-300">
-            <span className="font-bold text-[#D4AF37] uppercase tracking-wider">Academic Leadership</span>
+            <span className="font-bold text-[#D4AF37] uppercase tracking-wider">{currentLanguage === 'kn' ? 'ಶೈಕ್ಷಣಿಕ ನಾಯಕತ್ವ' : 'Academic Leadership'}</span>
             <span aria-hidden="true">·</span>
-            <span>Resident Faculty &amp; Pastoral Mentors</span>
+            <span>{currentLanguage === 'kn' ? 'ಬೋಧಕ ವೃಂದ & ಸಭಾಪಾಲನಾ ಮಾರ್ಗದರ್ಶಕರು' : 'Resident Faculty & Pastoral Mentors'}</span>
             <span aria-hidden="true">·</span>
             <span>ATA India Recognized Scholars</span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Principal&apos;s Address &amp; Faculty Leadership
+            {currentLanguage === 'kn' ? 'ಪ್ರಾಂಶುಪಾಲರ ಸಂದೇಶ & ಅಧ್ಯಾಪಕ ವೃಂದ' : 'Principal\'s Address & Faculty Leadership'}
           </h1>
 
           <p className="text-sm sm:text-base text-slate-200 max-w-3xl leading-relaxed">
-            Theological educators and experienced pastors committed to mentoring students in sound biblical exegesis, doctrinal fidelity, and authentic Christian character.
+            {currentLanguage === 'kn' 
+              ? 'ದೇವತಾಶಾಸ್ತ್ರ ಶಿಕ್ಷಣ ತಜ್ಞರು ಮತ್ತು ಅನುಭವಿ ಸಭಾಪಾಲಕರು ವಿದ್ಯಾರ್ಥಿಗಳನ್ನು ಸತ್ಯವೇದ ವ್ಯಾಖ್ಯಾನ, ಸಿದ್ಧಾಂತದ ಶುದ್ಧತೆ ಮತ್ತು ಕ್ರೈಸ್ತ ನಾಯಕತ್ವದಲ್ಲಿ ರೂಪಿಸುತ್ತಾರೆ.'
+              : 'Theological educators and experienced pastors committed to mentoring students in sound biblical exegesis, doctrinal fidelity, and authentic Christian character.'}
           </p>
         </div>
       </section>

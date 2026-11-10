@@ -15,7 +15,7 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyModal }) => {
-  const { currentLanguage } = useLanguage();
+  const { currentLanguage, t } = useLanguage();
 
   return (
     <div className="bg-[#FBF9F5] text-stone-800 font-sans">
@@ -24,7 +24,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyMod
       <section className="bg-[#1A365D] text-white border-b-4 border-[#C5A059] py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex items-center gap-2 text-xs font-sans text-slate-300">
-            <span className="font-bold text-[#D4AF37] uppercase tracking-wider">Institutional Overview</span>
+            <span className="font-bold text-[#D4AF37] uppercase tracking-wider">{t('navAbout')}</span>
             <span aria-hidden="true">·</span>
             <span>Est. Mysore, Karnataka</span>
             <span aria-hidden="true">·</span>
@@ -32,11 +32,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyMod
           </div>
 
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            About Native Evangelical School of Theology
+            {t('aboutHeading')}
           </h1>
 
           <p className="text-sm sm:text-base text-slate-200 max-w-3xl leading-relaxed">
-            Founded with an uncompromising conviction regarding the inerrancy of Scripture, NEST prepares pastors, scholars, and native church planters who minister with theological discernment and servant humility.
+            {t('aboutSub')}
           </p>
         </div>
       </section>
@@ -166,13 +166,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyMod
           <div className="max-w-3xl space-y-2">
             <div className="flex items-center gap-2 text-xs font-bold text-[#1A365D] uppercase tracking-wider">
               <BookOpen className="w-4 h-4 text-[#C5A059]" />
-              <span>Doctrinal Basis</span>
+              <span>{t('faithBadge')}</span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1A365D]">
-              Statement of Faith
+              {t('faithHeading')}
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 font-sans leading-relaxed">
-              The theological convictions that govern all teaching, faculty appointments, and student admissions at NEST.
+              {t('faithSub')}
             </p>
           </div>
 
@@ -184,7 +184,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyMod
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs font-mono text-[#C5A059] border-b border-stone-100 pb-2">
-                    <span className="font-bold">Article {idx + 1}</span>
+                    <span className="font-bold">{currentLanguage === 'kn' ? `ಪ್ರಮಾಣ ${idx + 1}` : `Article ${idx + 1}`}</span>
                     <span>{article.scriptureReferences[0]}</span>
                   </div>
                   <h3 className="font-serif font-bold text-base text-[#1A365D]">
@@ -196,7 +196,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyMod
                 </div>
 
                 <div className="pt-3 border-t border-stone-100 text-[11px] font-sans text-stone-500 space-y-1">
-                  <span className="font-semibold text-stone-700 block">Scripture References:</span>
+                  <span className="font-semibold text-stone-700 block">{currentLanguage === 'kn' ? 'ಸತ್ಯವೇದ ಉಲ್ಲೇಖಗಳು:' : 'Scripture References:'}</span>
                   <div className="flex flex-wrap gap-1.5">
                     {article.scriptureReferences.map((ref, rIdx) => (
                       <span key={rIdx} className="font-mono text-stone-600">
@@ -213,17 +213,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyMod
         {/* 4. Medium of Instruction & Language Policy */}
         <section className="bg-white border border-stone-300 rounded-lg p-8 sm:p-10 space-y-4">
           <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#1A365D]">
-            Languages of Instruction &amp; Regional Policy
+            {currentLanguage === 'kn' ? 'ಬೋಧನಾ ಭಾಷೆಗಳು ಮತ್ತು ಪ್ರಾದೇಶಿಕ ನೀತಿ' : 'Languages of Instruction & Regional Policy'}
           </h2>
           <div className="space-y-3 text-stone-700 text-xs sm:text-sm leading-relaxed max-w-4xl">
             <p>
-              <strong>Degree Programs (M.Div &amp; B.Th):</strong> English is the primary official medium of instruction for all lectures, examinations, research papers, and academic theses. This ensures alignment with ATA India standards and enables students to engage international theological literature.
+              <strong>{currentLanguage === 'kn' ? 'ಪದವಿ ಕೋರ್ಸ್‌ಗಳು (M.Div & B.Th):' : 'Degree Programs (M.Div & B.Th):'}</strong> {currentLanguage === 'kn' ? 'ಎಲ್ಲಾ ಉಪನ್ಯಾಸಗಳು, ಪರೀಕ್ಷೆಗಳು ಮತ್ತು ಪ್ರಬಂಧಗಳಿಗೆ ಇಂಗ್ಲಿಷ್ ಪ್ರಾಥಮಿಕ ಮಾಧ್ಯಮವಾಗಿದೆ. ಇದು ATA India ಮಾನದಂಡಗಳಿಗೆ ಅನುಗುಣವಾಗಿದ್ದು, ಅಂತಾರಾಷ್ಟ್ರೀಯ ದೇವತಾಶಾಸ್ತ್ರ ಸಾಹಿತ್ಯವನ್ನು ಅಧ್ಯಯನ ಮಾಡಲು ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ನೆರವಾಗುತ್ತದೆ.' : 'English is the primary official medium of instruction for all lectures, examinations, research papers, and academic theses. This ensures alignment with ATA India standards and enables students to engage international theological literature.'}
             </p>
             <p>
-              <strong>Diploma in Theology (Dip.Th):</strong> Taught in a bilingual format combining Kannada and English to equip native workers, evangelists, and village pastors who serve predominantly in regional vernacular contexts.
+              <strong>{currentLanguage === 'kn' ? 'ಡಿಪ್ಲೊಮಾ ಇನ್ ಥಿಯಾಲಜಿ (Dip.Th):' : 'Diploma in Theology (Dip.Th):'}</strong> {currentLanguage === 'kn' ? 'ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ದ್ವಿಭಾಷಾ ರೂಪದಲ್ಲಿ ಬೋಧಿಸಲಾಗುತ್ತದೆ. ಗ್ರಾಮೀಣ ಮತ್ತು ಪ್ರಾದೇಶಿಕ ಭಾಷೆಗಳಲ್ಲಿ ಸೇವೆ ಮಾಡುವ ಸ್ಥಳೀಯ ಸೇವಕರು ಮತ್ತು ಸುವಾರ್ತಿಕರಿಗೆ ಇದು ಅತ್ಯಂತ ಸೂಕ್ತವಾಗಿದೆ.' : 'Taught in a bilingual format combining Kannada and English to equip native workers, evangelists, and village pastors who serve predominantly in regional vernacular contexts.'}
             </p>
             <p>
-              <strong>Biblical Languages:</strong> All residential degree students receive instruction in Biblical Greek (New Testament) and Hebrew grammar (M.Div track) to develop independent exegesis skills from the original texts.
+              <strong>{currentLanguage === 'kn' ? 'ಮೂಲ ಬೈಬಲ್ ಭಾಷೆಗಳು:' : 'Biblical Languages:'}</strong> {currentLanguage === 'kn' ? 'ವಸತಿಯುತ ಪದವಿ ವಿದ್ಯಾರ್ಥಿಗಳು ಹೊಸ ಒಡಂಬಡಿಕೆಯ ಗ್ರೀಕ್ ಮತ್ತು ಹೀಬ್ರೂ ವ್ಯಾಕರಣವನ್ನು ಕಲಿಯುತ್ತಾರೆ, ಇದು ಮೂಲ ಸತ್ಯವೇದ ಪಠ್ಯಗಳನ್ನು ಆಳವಾಗಿ ವ್ಯಾಖ್ಯಾನಿಸಲು ನೆರವಾಗುತ್ತದೆ.' : 'All residential degree students receive instruction in Biblical Greek (New Testament) and Hebrew grammar (M.Div track) to develop independent exegesis skills from the original texts.'}
             </p>
           </div>
         </section>
@@ -232,10 +232,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyMod
         <div className="p-8 bg-[#1A365D] text-white rounded-lg flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center sm:text-left">
             <h3 className="font-serif text-xl font-bold text-white">
-              Ready to pursue theological studies at NEST?
+              {currentLanguage === 'kn' ? 'NEST ಕಾಲೇಜಿನಲ್ಲಿ ದೇವತಾಶಾಸ್ತ್ರ ಕಲಿಯಲು ಸಿದ್ಧರಿದ್ದೀರಾ?' : 'Ready to pursue theological studies at NEST?'}
             </h3>
             <p className="text-xs sm:text-sm text-slate-300">
-              Applications for Academic Year 2026–2027 are currently being accepted.
+              {t('admissionsOpen')}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -243,13 +243,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate, onOpenApplyMod
               onClick={() => onNavigate('admissions')}
               className="px-5 py-2.5 bg-[#D4AF37] text-[#1A365D] hover:bg-white font-sans font-bold text-xs uppercase tracking-wider rounded transition-colors whitespace-nowrap cursor-pointer shadow"
             >
-              Apply Online
+              {t('navApplyNow')}
             </button>
             <button
               onClick={() => onNavigate('programs')}
               className="px-4 py-2.5 border border-white/40 hover:bg-white/10 text-white font-sans text-xs uppercase tracking-wider rounded transition-colors whitespace-nowrap cursor-pointer"
             >
-              View Programs
+              {t('navPrograms')}
             </button>
           </div>
         </div>

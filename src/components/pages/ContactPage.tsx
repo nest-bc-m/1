@@ -13,6 +13,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { useAdminData } from '../../context/AdminDataContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ContactPageProps {
   onNavigate: (page: 'home' | 'about' | 'programs' | 'faculty' | 'campus' | 'admissions' | 'contact') => void;
@@ -20,6 +21,7 @@ interface ContactPageProps {
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const { institutionInfo } = useAdminData();
+  const { currentLanguage, t } = useLanguage();
 
   const [inquiryForm, setInquiryForm] = useState({
     name: '',
@@ -53,7 +55,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
       <section className="bg-[#1A365D] text-white border-b-4 border-[#C5A059] py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex items-center gap-2 text-xs font-sans text-slate-300">
-            <span className="font-bold text-[#D4AF37] uppercase tracking-wider">Campus Directory</span>
+            <span className="font-bold text-[#D4AF37] uppercase tracking-wider">{t('navContact')}</span>
             <span aria-hidden="true">·</span>
             <span>Nagarthalli Post, Mysore - 570008</span>
             <span aria-hidden="true">·</span>
@@ -61,11 +63,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           </div>
 
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Campus Location &amp; Contact Desk
+            {t('campusContactDeskTitle')}
           </h1>
 
           <p className="text-sm sm:text-base text-slate-200 max-w-3xl leading-relaxed">
-            Reach the admissions office, request prospectus materials, or visit our residential campus in Mysore, Karnataka.
+            {currentLanguage === 'kn'
+              ? 'ಪ್ರವೇಶ ಕಚೇರಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ, ಪ್ರವೇಶ ಮಾಹಿತಿ ಪಡೆಯಿರಿ ಅಥವಾ ಮೈಸೂರಿನಲ್ಲಿರುವ ನಮ್ಮ ವಸತಿಯುತ ಕ್ಯಾಂಪಸ್‌ಗೆ ಭೇಟಿ ನೀಡಿ.'
+              : 'Reach the admissions office, request prospectus materials, or visit our residential campus in Mysore, Karnataka.'}
           </p>
         </div>
       </section>
@@ -80,14 +84,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-white border border-stone-300 rounded-lg p-6 sm:p-8 space-y-6 shadow-sm">
               <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#1A365D]">
-                Campus Address &amp; Numbers
+                {t('campusContactDeskTitle')}
               </h2>
 
               <div className="space-y-4 text-xs sm:text-sm text-stone-700 font-sans">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-[#C5A059] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Campus Address:</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('campusAddressLabel')}</strong>
                     <span>No. 133, Nagarthalli, Rayanakere P. O, Jayapura Hobli, Mysore 570008, Karnataka, India</span>
                   </div>
                 </div>
@@ -95,7 +99,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-[#C5A059] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Principal &amp; Admissions Hotline:</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('admissionsHotlineLabel')}</strong>
                     <a href={`tel:${institutionInfo.phone}`} className="font-mono font-bold text-[#1A365D] hover:underline">
                       {institutionInfo.phoneFormatted}
                     </a>
@@ -105,7 +109,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 <div className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-[#C5A059] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Official Email:</strong>
+                    <strong className="text-stone-900 block font-semibold">{t('officialEmailLabel')}</strong>
                     <a href={`mailto:${institutionInfo.email}`} className="text-[#1A365D] hover:underline">
                       {institutionInfo.email}
                     </a>
@@ -115,9 +119,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-[#C5A059] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-stone-900 block font-semibold">Office Hours:</strong>
-                    <span>Monday to Saturday: 8:30 AM – 5:30 PM (IST)</span>
-                    <span className="block text-stone-500 text-xs mt-0.5">Closed on Sundays for church ministry</span>
+                    <strong className="text-stone-900 block font-semibold">{t('officeHoursLabel')}</strong>
+                    <span>{t('officeHoursValue')}</span>
+                    <span className="block text-stone-500 text-xs mt-0.5">{currentLanguage === 'kn' ? 'ಸಭಾ ಸೇವೆಗಾಗಿ ಭಾನುವಾರ ರಜೆ ಇರುತ್ತದೆ' : 'Closed on Sundays for church ministry'}</span>
                   </div>
                 </div>
               </div>
@@ -130,7 +134,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   className="w-full py-2.5 bg-[#1A365D] hover:bg-[#204373] text-white text-xs font-bold uppercase tracking-wider rounded flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <Navigation className="w-4 h-4 text-[#D4AF37]" />
-                  <span>Open in Google Maps</span>
+                  <span>{currentLanguage === 'kn' ? 'ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ' : 'Open in Google Maps'}</span>
                   <ExternalLink className="w-3 h-3 text-[#D4AF37]" />
                 </a>
 
@@ -141,7 +145,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   className="w-full py-2.5 bg-[#128C7E] hover:bg-[#075E54] text-white text-xs font-bold uppercase tracking-wider rounded flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <MessageSquare className="w-4 h-4" />
-                  <span>Direct Principal WhatsApp</span>
+                  <span>{t('whatsappPrincipalDeskBtn')}</span>
                 </a>
               </div>
             </div>

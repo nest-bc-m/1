@@ -25,13 +25,13 @@ export const CampusPage: React.FC<CampusPageProps> = ({ onNavigate, onOpenApplyM
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
 
   const categories = [
-    { id: 'all', label: 'All Campus Facilities' },
-    { id: 'grounds', label: 'Grounds & Buildings' },
-    { id: 'classroom', label: 'Classrooms & Lectures' },
-    { id: 'chapel', label: 'Chapel & Sanctuary' },
-    { id: 'student-life', label: 'Refectory & Dining' },
-    { id: 'convocation', label: 'Graduation Convocation' },
-    { id: 'faculty', label: 'Faculty Cohort' },
+    { id: 'all', label: currentLanguage === 'kn' ? 'ಎಲ್ಲಾ ಸೌಲಭ್ಯಗಳು' : 'All Campus Facilities' },
+    { id: 'grounds', label: currentLanguage === 'kn' ? 'ಕಟ್ಟಡ ಮತ್ತು ಆವರಣ' : 'Grounds & Buildings' },
+    { id: 'classroom', label: currentLanguage === 'kn' ? 'ತರಗತಿ ಕೊಠಡಿಗಳು' : 'Classrooms & Lectures' },
+    { id: 'chapel', label: currentLanguage === 'kn' ? 'ಚಾಪೆಲ್ ಮಂದಿರ' : 'Chapel & Sanctuary' },
+    { id: 'student-life', label: currentLanguage === 'kn' ? 'ಭೋಜನಾಲಯ & ಹಾಸ್ಟೆಲ್' : 'Refectory & Dining' },
+    { id: 'convocation', label: currentLanguage === 'kn' ? 'ಘಟಿಕೋತ್ಸವ' : 'Graduation Convocation' },
+    { id: 'faculty', label: currentLanguage === 'kn' ? 'ಅಧ್ಯಾಪಕ ವರ್ಗ' : 'Faculty Cohort' },
   ];
 
   const filteredPhotos = activeCategory === 'all'
@@ -50,19 +50,21 @@ export const CampusPage: React.FC<CampusPageProps> = ({ onNavigate, onOpenApplyM
       <section className="bg-[#1A365D] text-white border-b-4 border-[#C5A059] py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex items-center gap-2 text-xs font-sans text-slate-300">
-            <span className="font-bold text-[#D4AF37] uppercase tracking-wider">Campus Life &amp; Facilities</span>
+            <span className="font-bold text-[#D4AF37] uppercase tracking-wider">{currentLanguage === 'kn' ? 'ಕ್ಯಾಂಪಸ್ ಸೌಲಭ್ಯಗಳು' : 'Campus Life & Facilities'}</span>
             <span aria-hidden="true">·</span>
             <span>Nagarthalli Post, Mysore - 570008</span>
             <span aria-hidden="true">·</span>
-            <span>Residential Theological Community</span>
+            <span>{currentLanguage === 'kn' ? 'ವಸತಿಯುತ ದೇವತಾಶಾಸ್ತ್ರ ಸಮುದಾಯ' : 'Residential Theological Community'}</span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Campus Environment &amp; Student Life
+            {currentLanguage === 'kn' ? 'ಕ್ಯಾಂಪಸ್ ವಾತಾವರಣ ಮತ್ತು ವಿದ್ಯಾರ್ಥಿ ಜೀವನ' : 'Campus Environment & Student Life'}
           </h1>
 
           <p className="text-sm sm:text-base text-slate-200 max-w-3xl leading-relaxed">
-            A quiet, peaceful setting in Mysore providing residential students with academic lecture halls, chapel of daily prayer, theological library, student refectory, and sports grounds.
+            {currentLanguage === 'kn'
+              ? 'ಮೈಸೂರಿನಲ್ಲಿರುವ ನಮ್ಮ ಪ್ರಶಾಂತ ಕ್ಯಾಂಪಸ್ ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಆಧುನಿಕ ಉಪನ್ಯಾಸ ಕೊಠಡಿಗಳು, ದೈನಂದಿನ ಪ್ರಾರ್ಥನಾ ಚಾಪೆಲ್, ದೇವತಾಶಾಸ್ತ್ರ ಗ್ರಂಥಾಲಯ, ವಿದ್ಯಾರ್ಥಿ ಭೋಜನಾಲಯ ಮತ್ತು ಕ್ರೀಡಾಂಗಣವನ್ನು ಒದಗಿಸುತ್ತದೆ.'
+              : 'A quiet, peaceful setting in Mysore providing residential students with academic lecture halls, chapel of daily prayer, theological library, student refectory, and sports grounds.'}
           </p>
         </div>
       </section>

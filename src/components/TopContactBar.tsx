@@ -130,36 +130,37 @@ export const TopContactBar: React.FC<TopContactBarProps> = ({
         </div>
       </div>
 
-      {/* Institutional Announcement Ribbon */}
-      {activeAnnouncement && (
-        <div className="bg-[#0c192c] text-[#D4AF37] text-[11px] sm:text-xs py-1.5 px-4 border-b border-[#D4AF37]/30">
-          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded bg-[#D4AF37] text-[#1A365D] font-bold uppercase tracking-wider text-[10px]">
-                {currentLanguage === 'kn' ? activeAnnouncement.badgeKn : activeAnnouncement.badgeEn}
-              </span>
-              <span className="text-slate-200">
+      {/* Institutional Theme & Motto Ribbon */}
+      <div className="bg-[#0c192c] text-white text-[11px] sm:text-xs py-1.5 px-4 border-b border-[#D4AF37]/30">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="px-2 py-0.5 rounded bg-[#D4AF37] text-[#1A365D] font-bold uppercase tracking-wider text-[10px] shrink-0">
+              {currentLanguage === 'kn' ? 'ಧ್ಯೇಯವಾಕ್ಯ' : 'Official Theme'}
+            </span>
+            <span className="text-slate-100 font-serif font-semibold tracking-wide">
+              &ldquo;{currentLanguage === 'kn' ? institutionInfo.mottoKn : institutionInfo.motto}&rdquo;
+            </span>
+            <span className="text-[#D4AF37] font-semibold text-[11px] shrink-0">
+              ({currentLanguage === 'kn' ? institutionInfo.mottoScriptureKn : institutionInfo.mottoScripture})
+            </span>
+          </div>
+
+          {activeAnnouncement && (
+            <div className="hidden md:flex items-center gap-3 text-slate-300">
+              <span className="text-slate-300 text-[11px]">
                 {currentLanguage === 'kn' ? activeAnnouncement.titleKn : activeAnnouncement.titleEn}
               </span>
+              <button
+                onClick={() => onNavigate ? onNavigate('admissions') : (window.location.hash = '#admissions')}
+                className="text-[#D4AF37] hover:underline flex items-center gap-1 font-semibold text-[11px] cursor-pointer"
+              >
+                <span>{currentLanguage === 'kn' ? 'ಪ್ರವೇಶಾತಿ ಮಾಹಿತಿ' : 'Admissions 2026–27'}</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </button>
             </div>
-
-            <div className="hidden md:flex items-center gap-3 text-slate-300">
-              <span>{currentLanguage === 'kn' ? activeAnnouncement.subKn : activeAnnouncement.subEn}</span>
-              {activeAnnouncement.linkUrl && (
-                <a
-                  href={activeAnnouncement.linkUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#D4AF37] hover:underline flex items-center gap-1 font-semibold"
-                >
-                  <span>Verify</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </a>
-              )}
-            </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
