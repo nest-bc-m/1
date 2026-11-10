@@ -68,7 +68,7 @@ function MainAppContent() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#FBF9F5] text-slate-800 flex flex-col antialiased selection:bg-[#1A365D] selection:text-[#D4AF37] ${isAdminLoggedIn ? 'pt-8' : ''}`}>
+    <div className={`min-h-screen w-full max-w-full overflow-x-hidden bg-[#FBF9F5] text-slate-800 flex flex-col antialiased selection:bg-[#1A365D] selection:text-[#D4AF37] ${isAdminLoggedIn ? 'pt-8' : ''}`}>
       
       {/* Admin Floating Control Bar when Logged In */}
       <AdminFloatingBar 

@@ -527,7 +527,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // 3. Faculty State
   const [facultyList, setFacultyList] = useState<FacultyMember[]>(() => {
     try {
-      const saved = localStorage.getItem('nest_cms_faculty_v1');
+      const saved = localStorage.getItem('nest_cms_faculty_v2');
       if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error(e);
@@ -549,8 +549,16 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // 5. Gallery Photos State
   const [galleryPhotos, setGalleryPhotos] = useState<GalleryPhotoItem[]>(() => {
     try {
-      const saved = localStorage.getItem('nest_cms_gallery_v1');
-      if (saved) return JSON.parse(saved);
+      const saved = localStorage.getItem('nest_cms_gallery_v2');
+      if (saved) {
+        const parsed: GalleryPhotoItem[] = JSON.parse(saved);
+        return parsed.map((item) => ({
+          ...item,
+          imageUrl: item.imageUrl && !item.imageUrl.includes('unsplash.com')
+            ? item.imageUrl
+            : getAssetUrl(item.imageUrl, 'campus')
+        }));
+      }
     } catch (e) {
       console.error(e);
     }
@@ -601,7 +609,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, [announcements]);
 
   useEffect(() => {
-    localStorage.setItem('nest_cms_faculty_v1', JSON.stringify(facultyList));
+    localStorage.setItem('nest_cms_faculty_v2', JSON.stringify(facultyList));
   }, [facultyList]);
 
   useEffect(() => {
@@ -609,7 +617,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, [programsList]);
 
   useEffect(() => {
-    localStorage.setItem('nest_cms_gallery_v1', JSON.stringify(galleryPhotos));
+    localStorage.setItem('nest_cms_gallery_v2', JSON.stringify(galleryPhotos));
   }, [galleryPhotos]);
 
   useEffect(() => {
@@ -813,8 +821,11 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     localStorage.removeItem('nest_cms_institution_v1');
     localStorage.removeItem('nest_cms_announcements_v1');
     localStorage.removeItem('nest_cms_faculty_v1');
+    localStorage.removeItem('nest_cms_faculty_v2');
     localStorage.removeItem('nest_cms_programs_v1');
+    localStorage.removeItem('nest_cms_programs_v2');
     localStorage.removeItem('nest_cms_gallery_v1');
+    localStorage.removeItem('nest_cms_gallery_v2');
     localStorage.removeItem('nest_cms_admissions_v1');
     localStorage.removeItem('nest_admin_password_v1');
   };

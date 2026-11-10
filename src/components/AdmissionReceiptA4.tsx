@@ -515,8 +515,10 @@ export const AdmissionReceiptA4: React.FC<AdmissionReceiptA4Props> = ({
           </div>
         </div>
 
-        {/* Render Document Inline */}
-        {renderA4Document()}
+        {/* Render Document Inline with mobile scroll protection */}
+        <div className="w-full overflow-x-auto pb-4">
+          {renderA4Document()}
+        </div>
 
         {/* Post-print helpful action bar */}
         <div className="no-print mt-6 bg-[#F4F1EA] border border-[#D1C7B7] rounded-2xl p-5 text-center space-y-3 shadow-sm">
@@ -618,7 +620,7 @@ export const AdmissionReceiptA4: React.FC<AdmissionReceiptA4Props> = ({
           </div>
 
           {/* Centered Document Paper */}
-          <div className="w-full max-w-4xl pb-10">
+          <div className="w-full max-w-4xl pb-10 overflow-x-auto">
             {renderA4Document()}
           </div>
         </div>

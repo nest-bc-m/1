@@ -474,7 +474,12 @@ export const CampusGallery: React.FC = () => {
                   </div>
                   {newPhoto.imageUrl && (
                     <div className="mt-2 w-full h-32 rounded-xl overflow-hidden border border-[#D4AF37] bg-black">
-                      <img src={newPhoto.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                      <img 
+                        src={getAssetUrl(newPhoto.imageUrl, 'campus')} 
+                        alt="Preview" 
+                        onError={(e) => handleImageError(e, 'campus')}
+                        className="w-full h-full object-cover" 
+                      />
                     </div>
                   )}
                 </div>

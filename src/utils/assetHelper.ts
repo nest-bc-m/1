@@ -1,27 +1,37 @@
 /**
- * Asset Helper for GitHub Pages and Local Hosting
+ * Asset Helper for NEST Bible College
  *
  * Automatically resolves asset paths with Vite's import.meta.env.BASE_URL
- * so that all images work seamlessly whether hosted at root ('/'),
- * in subdirectories (like '/1/' on GitHub Pages), or loaded with relative paths.
+ * (e.g., '/1/' on GitHub Pages or '/' locally) so that all official uploaded photos
+ * resolve seamlessly with zero broken links.
  *
- * Also provides high-reliability Unsplash fallbacks and SVG data URLs
- * so that no broken image or icon is ever shown to the user.
+ * STRICT REQUIREMENT: Only authentic college photos from /assets/aistudio/
+ * are used. No external Unsplash, 3D, or generic stock placeholders.
  */
 
-// Fallback high-quality academic and theological images from Unsplash
-export const FALLBACK_IMAGES = {
-  college: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80',
-  campus: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80',
-  chapel: 'https://images.unsplash.com/photo-1548625361-195973a8e9e1?auto=format&fit=crop&w=1200&q=80',
-  classroom: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80',
-  dining: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80',
-  faculty: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80',
-  principal: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
-  student: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-  library: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80',
-  ground: 'https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?auto=format&fit=crop&w=1200&q=80',
+// Authentic official college photos provided by NEST Bible College
+export const AUTHENTIC_FALLBACKS = {
+  college: 'assets/aistudio/college_48f40f17.webp',
+  campus: 'assets/aistudio/campas1_cd942b74.webp',
+  campus1: 'assets/aistudio/campas1_cd942b74.webp',
+  campus2: 'assets/aistudio/campas2_f33241ae.webp',
+  campus3: 'assets/aistudio/campas3_49c79e1d.webp',
+  campus4: 'assets/aistudio/campas4_e0178398.png',
+  chapel: 'assets/aistudio/chapel_d7e08b0f.webp',
+  classroom: 'assets/aistudio/classroom_3ee27e65.webp',
+  classroom2: 'assets/aistudio/classroom2_00d3372c.webp',
+  dining: 'assets/aistudio/dinig_hall_3a8b4555.webp',
+  faculty: 'assets/aistudio/techers_e3355ac8.webp',
+  principal: 'assets/aistudio/pricipal_7db520a9.webp',
+  student: 'assets/aistudio/3_e50ff7c9.webp',
+  library: 'assets/aistudio/classroom2_00d3372c.webp',
+  ground: 'assets/aistudio/spots_00f2ae6c.webp',
+  convocation: 'assets/aistudio/5_81316861.webp',
+  logo: 'assets/aistudio/logo_9f1d35a7.jpg',
 };
+
+// Backwards-compatible alias for existing imports
+export const FALLBACK_IMAGES = AUTHENTIC_FALLBACKS;
 
 // Inline SVG Fallback for Logo so logo is 100% resilient
 export const FALLBACK_LOGO_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(`
@@ -53,50 +63,99 @@ export const FALLBACK_LOGO_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(`
 
 /**
  * Resolves an asset path to work with the Vite base URL (e.g., '/1/' on GitHub Pages).
- * Handles absolute paths ('/assets/...'), relative paths, full http(s) URLs, and data URLs.
+ * Safely handles absolute paths ('/assets/...'), relative paths ('assets/...'),
+ * and prevents double-prefixing if the path already contains the base.
+ *
+ * If path is missing, empty, or points to an obsolete external stock URL (Unsplash),
+ * it returns the clean authentic local asset path.
  */
-export function getAssetUrl(path: string | undefined | null, fallbackKey?: keyof typeof FALLBACK_IMAGES): string {
-  if (!path) {
-    if (fallbackKey && FALLBACK_IMAGES[fallbackKey]) {
-      return FALLBACK_IMAGES[fallbackKey];
-    }
-    return FALLBACK_IMAGES.campus;
+export function getAssetUrl(
+  path: string | undefined | null,
+  fallbackKey?: keyof typeof AUTHENTIC_FALLBACKS
+): string {
+  const rawBase = import.meta.env.BASE_URL || '/';
+  const cleanBase = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+
+  // Determine authentic fallback asset path
+  const defaultAsset = fallbackKey && AUTHENTIC_FALLBACKS[fallbackKey] 
+    ? AUTHENTIC_FALLBACKS[fallbackKey] 
+    : AUTHENTIC_FALLBACKS.college;
+
+  if (!path || typeof path !== 'string' || path.trim() === '') {
+    return `${cleanBase}${defaultAsset.startsWith('/') ? defaultAsset.slice(1) : defaultAsset}`;
   }
 
-  // Already a full external URL or data URL
-  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:') || path.startsWith('blob:')) {
+  // Intercept and purge any legacy external stock URLs
+  if (path.includes('unsplash.com') || path.includes('placeholder')) {
+    return `${cleanBase}${defaultAsset.startsWith('/') ? defaultAsset.slice(1) : defaultAsset}`;
+  }
+
+  // Preserve user-uploaded data URLs or blob previews
+  if (path.startsWith('data:') || path.startsWith('blob:')) {
     return path;
   }
 
-  const base = import.meta.env.BASE_URL || '/';
-  
-  // Clean path by stripping leading slashes
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  const cleanBase = base.endsWith('/') ? base : `${base}/`;
+  // If path is already a valid non-stock external URL (not unsplash), keep it
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  }
+
+  let cleanPath = path.trim();
+
+  // If cleanBase is e.g. '/1/' and path already starts with '/1/' or '1/', do not prepend again
+  if (cleanBase !== '/' && cleanPath.startsWith(cleanBase)) {
+    return cleanPath;
+  }
+  const cleanBaseNoLeadingSlash = cleanBase.startsWith('/') ? cleanBase.slice(1) : cleanBase;
+  if (cleanBaseNoLeadingSlash && cleanPath.startsWith(cleanBaseNoLeadingSlash)) {
+    return `/${cleanPath}`;
+  }
+
+  // Strip leading slash from path before joining with cleanBase
+  if (cleanPath.startsWith('/')) {
+    cleanPath = cleanPath.slice(1);
+  }
 
   return `${cleanBase}${cleanPath}`;
 }
 
 /**
- * Image onError handler to automatically replace a broken image with a clean fallback.
+ * Image onError handler to automatically replace a broken image with an authentic college photo.
+ * Strictly avoids infinite error loops by checking data-fallback-applied.
  */
 export function handleImageError(
   event: React.SyntheticEvent<HTMLImageElement, Event>,
-  fallbackKey: keyof typeof FALLBACK_IMAGES = 'campus'
+  fallbackKey: keyof typeof AUTHENTIC_FALLBACKS = 'college'
 ) {
   const target = event.currentTarget;
-  const fallback = FALLBACK_IMAGES[fallbackKey] || FALLBACK_IMAGES.campus;
-  if (target.src !== fallback) {
-    target.src = fallback;
+  if (target.dataset.fallbackApplied === 'true') {
+    return; // Already fell back, avoid recursion
+  }
+
+  target.dataset.fallbackApplied = 'true';
+  const fallbackAsset = AUTHENTIC_FALLBACKS[fallbackKey] || AUTHENTIC_FALLBACKS.college;
+  const fallbackUrl = getAssetUrl(fallbackAsset);
+  if (target.src !== fallbackUrl) {
+    target.src = fallbackUrl;
   }
 }
 
 /**
- * Specific error handler for logos to switch to the robust inline SVG fallback.
+ * Specific error handler for logos to switch to the authentic official logo JPEG,
+ * or fallback inline SVG if needed.
  */
 export function handleLogoError(event: React.SyntheticEvent<HTMLImageElement, Event>) {
   const target = event.currentTarget;
-  if (target.src !== FALLBACK_LOGO_SVG) {
-    target.src = FALLBACK_LOGO_SVG;
+  if (target.dataset.fallbackApplied === 'true') {
+    if (target.src !== FALLBACK_LOGO_SVG) {
+      target.src = FALLBACK_LOGO_SVG;
+    }
+    return;
+  }
+
+  target.dataset.fallbackApplied = 'true';
+  const officialLogoUrl = getAssetUrl('assets/aistudio/logo_9f1d35a7.jpg');
+  if (target.src !== officialLogoUrl) {
+    target.src = officialLogoUrl;
   }
 }

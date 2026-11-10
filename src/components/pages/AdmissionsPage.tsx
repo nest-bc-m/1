@@ -40,10 +40,10 @@ export const AdmissionsPage: React.FC<AdmissionsPageProps> = ({
           </p>
 
           {/* Interactive Navigation Tabs for Form vs Status Tracker */}
-          <div className="pt-4 flex flex-wrap items-center gap-3">
+          <div className="pt-4 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
             <button
               onClick={() => setActiveTab('form')}
-              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+              className={`w-full sm:w-auto min-h-[44px] justify-center px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
                 activeTab === 'form'
                   ? 'bg-[#D4AF37] text-[#1A365D] shadow-lg scale-102'
                   : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
@@ -55,7 +55,7 @@ export const AdmissionsPage: React.FC<AdmissionsPageProps> = ({
 
             <button
               onClick={() => setActiveTab('tracker')}
-              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+              className={`w-full sm:w-auto min-h-[44px] justify-center px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
                 activeTab === 'tracker'
                   ? 'bg-[#D4AF37] text-[#1A365D] shadow-lg scale-102'
                   : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
@@ -117,7 +117,7 @@ export const AdmissionsPage: React.FC<AdmissionsPageProps> = ({
               </div>
 
               {/* Form wrapper */}
-              <div className="bg-white border border-stone-300 rounded-lg p-6 sm:p-10 shadow-sm">
+              <div className="bg-white border border-stone-300 rounded-lg p-3 sm:p-8 lg:p-10 shadow-sm">
                 <OnlineAdmissionForm initialProgramId={selectedProgramId} />
               </div>
             </section>

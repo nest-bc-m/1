@@ -131,16 +131,16 @@ export const TopContactBar: React.FC<TopContactBarProps> = ({
       </div>
 
       {/* Institutional Theme & Motto Ribbon */}
-      <div className="bg-[#0c192c] text-white text-[11px] sm:text-xs py-1.5 px-4 border-b border-[#D4AF37]/30">
+      <div className="bg-[#0c192c] text-white text-[10.5px] sm:text-xs py-1.5 px-3 sm:px-4 border-b border-[#D4AF37]/30 w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="px-2 py-0.5 rounded bg-[#D4AF37] text-[#1A365D] font-bold uppercase tracking-wider text-[10px] shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap max-w-full">
+            <span className="px-2 py-0.5 rounded bg-[#D4AF37] text-[#1A365D] font-bold uppercase tracking-wider text-[9.5px] sm:text-[10px] shrink-0">
               {currentLanguage === 'kn' ? 'ಧ್ಯೇಯವಾಕ್ಯ' : 'Official Theme'}
             </span>
-            <span className="text-slate-100 font-serif font-semibold tracking-wide">
+            <span className="text-slate-100 font-serif font-semibold tracking-wide break-words">
               &ldquo;{currentLanguage === 'kn' ? institutionInfo.mottoKn : institutionInfo.motto}&rdquo;
             </span>
-            <span className="text-[#D4AF37] font-semibold text-[11px] shrink-0">
+            <span className="text-[#D4AF37] font-semibold text-[10.5px] sm:text-[11px] shrink-0">
               ({currentLanguage === 'kn' ? institutionInfo.mottoScriptureKn : institutionInfo.mottoScripture})
             </span>
           </div>

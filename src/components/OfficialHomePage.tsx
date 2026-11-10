@@ -115,8 +115,8 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
       {/* ========================================================================= */}
       {/* 0. ACADEMIC HERO BANNER: DIGNIFIED, SCRIPTURAL, OFFICIAL                   */}
       {/* ========================================================================= */}
-      <section className="relative bg-[#1A365D] text-white border-b-4 border-[#C5A059]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+      <section className="relative bg-[#1A365D] text-white border-b-4 border-[#C5A059] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 lg:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* Left Column: Academic Standing & Mission */}
@@ -133,33 +133,33 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
 
               {/* Dignified Institutional Headline */}
               <div className="space-y-3">
-                <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+                <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight break-words">
                   {t('heroHeadline')}
                 </h1>
-                <p className="text-base sm:text-lg text-slate-200 font-sans leading-relaxed max-w-3xl">
+                <p className="text-sm sm:text-base lg:text-lg text-slate-200 font-sans leading-relaxed max-w-3xl">
                   {t('heroSub')}
                 </p>
               </div>
 
               {/* Institutional Scripture Foundation (2 Peter 1:3-4) */}
-              <div className="bg-[#112440]/90 border-l-4 border-[#C5A059] p-5 rounded-r-lg max-w-2xl space-y-2">
+              <div className="bg-[#112440]/90 border-l-4 border-[#C5A059] p-4 sm:p-5 rounded-r-lg max-w-2xl space-y-2">
                 <div className="flex items-center gap-2 text-xs font-sans font-bold text-[#D4AF37] tracking-wider uppercase">
                   <span>{t('heroMotto')}</span>
                 </div>
-                <p className="font-serif italic text-sm sm:text-base text-slate-100 leading-relaxed">
+                <p className="font-serif italic text-xs sm:text-sm md:text-base text-slate-100 leading-relaxed">
                   &ldquo;{t('heroVerseQuote')}&rdquo;
                 </p>
-                <div className="flex items-center justify-between text-xs font-sans text-[#D4AF37] font-semibold pt-1">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs font-sans text-[#D4AF37] font-semibold pt-1">
                   <span>{t('heroMottoScripture')}</span>
                   <span className="text-slate-300 font-normal">{t('heroVerseFootnote')}</span>
                 </div>
               </div>
 
               {/* Dual Action Affordances */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 pt-2">
                 <button
                   onClick={() => onNavigate('admissions')}
-                  className="px-5 py-3 bg-[#D4AF37] text-[#1A365D] hover:bg-white font-sans font-bold text-xs sm:text-sm uppercase tracking-wider rounded transition-colors inline-flex items-center gap-2 cursor-pointer shadow"
+                  className="w-full sm:w-auto min-h-[44px] justify-center px-5 py-3 bg-[#D4AF37] text-[#1A365D] hover:bg-white font-sans font-bold text-xs sm:text-sm uppercase tracking-wider rounded transition-colors inline-flex items-center gap-2 cursor-pointer shadow"
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>{t('navAdmissions')} 2026–2027</span>
@@ -168,7 +168,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
 
                 <button
                   onClick={() => onNavigate('programs')}
-                  className="px-5 py-3 border border-white/40 hover:bg-white/10 text-white font-sans font-semibold text-xs sm:text-sm uppercase tracking-wider rounded transition-colors inline-flex items-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto min-h-[44px] justify-center px-5 py-3 border border-white/40 hover:bg-white/10 text-white font-sans font-semibold text-xs sm:text-sm uppercase tracking-wider rounded transition-colors inline-flex items-center gap-2 cursor-pointer"
                 >
                   <BookOpen className="w-4 h-4 text-[#D4AF37]" />
                   <span>{t('navPrograms')}</span>
@@ -176,7 +176,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
 
                 <button
                   onClick={() => onNavigate('about')}
-                  className="px-4 py-3 text-slate-200 hover:text-white text-xs sm:text-sm font-sans font-medium transition-colors inline-flex items-center gap-1 cursor-pointer"
+                  className="w-full sm:w-auto min-h-[44px] justify-center px-4 py-3 text-slate-200 hover:text-white text-xs sm:text-sm font-sans font-medium transition-colors inline-flex items-center gap-1 cursor-pointer"
                 >
                   <span>{t('navAbout')}</span>
                   <ChevronRight className="w-3.5 h-3.5 text-[#D4AF37]" />
@@ -186,8 +186,8 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             </div>
 
             {/* Right Column: Institutional Seal & Operational Summary */}
-            <div className="lg:col-span-4 flex flex-col items-center">
-              <div className="w-full max-w-sm bg-[#112440]/90 border border-white/15 rounded-xl p-6 shadow-xl space-y-5 text-center">
+            <div className="lg:col-span-4 flex flex-col items-center w-full">
+              <div className="w-full max-w-sm bg-[#112440]/90 border border-white/15 rounded-xl p-4 sm:p-6 shadow-xl space-y-5 text-center">
                 <div className="flex justify-center">
                   <NestLogo size="xl" variant="badge" />
                 </div>
@@ -506,8 +506,8 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             ))}
           </div>
 
-          <div className="p-4 bg-white border border-stone-300 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-sans text-stone-600">
-            <div className="space-y-0.5 text-center sm:text-left">
+          <div className="p-4 bg-white border border-stone-300 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 text-xs font-sans text-stone-600">
+            <div className="space-y-0.5 text-left">
               <span className="font-bold text-stone-800">{t('distanceBoxTitle')}</span>
               <p className="text-stone-600">
                 {t('distanceBoxDesc')}
@@ -515,7 +515,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
             </div>
             <button
               onClick={() => onNavigate('programs')}
-              className="text-xs font-bold text-[#1A365D] hover:text-[#C5A059] whitespace-nowrap cursor-pointer underline"
+              className="text-xs font-bold text-[#1A365D] hover:text-[#C5A059] whitespace-nowrap cursor-pointer underline self-start sm:self-auto shrink-0"
             >
               {t('distanceBoxLink')}
             </button>

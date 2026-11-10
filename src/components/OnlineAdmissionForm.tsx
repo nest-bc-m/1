@@ -314,7 +314,7 @@ export const OnlineAdmissionForm: React.FC<OnlineAdmissionFormProps> = ({
             { num: '4', label: t('stepChurchCalling') },
             { num: '5', label: t('stepDeclarationA4') },
           ].map((s, idx) => (
-            <div key={idx} className="bg-white/5 rounded-lg py-2 px-2 border border-white/10 flex items-center justify-center gap-1.5">
+            <div key={idx} className={`bg-white/5 rounded-lg py-2 px-2 border border-white/10 flex items-center justify-center gap-1.5 ${idx === 4 ? 'col-span-2 sm:col-span-1' : ''}`}>
               <span className="w-5 h-5 rounded-full bg-[#D4AF37] text-[#1A365D] font-bold text-[10px] flex items-center justify-center flex-shrink-0">
                 {s.num}
               </span>

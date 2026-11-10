@@ -76,10 +76,10 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-1 p-1 bg-stone-200/80 rounded-lg self-start sm:self-auto">
+          <div className="flex items-center gap-1 p-1 bg-stone-200/80 rounded-lg w-full sm:w-auto overflow-x-auto">
             <button
               onClick={() => setActiveTab('all')}
-              className={`px-3 py-1.5 text-xs font-sans font-semibold rounded transition-colors cursor-pointer ${
+              className={`flex-1 sm:flex-none text-center whitespace-nowrap min-h-[38px] px-3 py-1.5 text-xs font-sans font-semibold rounded transition-colors cursor-pointer ${
                 activeTab === 'all'
                   ? 'bg-white text-stone-900 shadow-sm'
                   : 'text-stone-600 hover:text-stone-900'
@@ -89,7 +89,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('regular')}
-              className={`px-3 py-1.5 text-xs font-sans font-semibold rounded transition-colors cursor-pointer ${
+              className={`flex-1 sm:flex-none text-center whitespace-nowrap min-h-[38px] px-3 py-1.5 text-xs font-sans font-semibold rounded transition-colors cursor-pointer ${
                 activeTab === 'regular'
                   ? 'bg-white text-stone-900 shadow-sm'
                   : 'text-stone-600 hover:text-stone-900'
@@ -99,7 +99,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('distance')}
-              className={`px-3 py-1.5 text-xs font-sans font-semibold rounded transition-colors cursor-pointer ${
+              className={`flex-1 sm:flex-none text-center whitespace-nowrap min-h-[38px] px-3 py-1.5 text-xs font-sans font-semibold rounded transition-colors cursor-pointer ${
                 activeTab === 'distance'
                   ? 'bg-white text-stone-900 shadow-sm'
                   : 'text-stone-600 hover:text-stone-900'
@@ -129,7 +129,7 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                 className="bg-white border border-stone-300 rounded-lg shadow-sm hover:border-[#C5A059] transition-all overflow-hidden"
               >
                 {/* Header Strip */}
-                <div className="p-6 sm:p-8 space-y-4">
+                <div className="p-4 sm:p-8 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                     <div className="space-y-1">
                       <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#C5A059] uppercase tracking-wider">
@@ -140,8 +140,8 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                         <span>{program.ataAccredited ? (currentLanguage === 'kn' ? 'ATA India ಮಾನ್ಯತೆ ಪಡೆದಿದೆ' : 'ATA India Accredited') : (currentLanguage === 'kn' ? 'ಸೆಮಿನರಿ ಸರ್ಟಿಫಿಕೇಟ್' : 'Seminary Certificate')}</span>
                       </div>
 
-                      <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#1A365D]">
-                        {titleDisplay} <span className="font-mono text-lg font-normal text-stone-500">({program.code})</span>
+                      <h3 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-[#1A365D] break-words">
+                        {titleDisplay} <span className="font-mono text-base sm:text-lg font-normal text-stone-500">({program.code})</span>
                       </h3>
 
                       <p className="text-xs sm:text-sm text-stone-600 font-sans max-w-3xl pt-1">
@@ -149,10 +149,10 @@ export const ProgramsPage: React.FC<ProgramsPageProps> = ({
                       </p>
                     </div>
 
-                    <div className="shrink-0 flex items-center gap-2">
+                    <div className="shrink-0 flex items-center gap-2 w-full sm:w-auto">
                       <button
                         onClick={() => onSelectProgramToApply(program.id)}
-                        className="px-4 py-2 bg-[#D4AF37] hover:bg-stone-900 hover:text-white text-[#1A365D] text-xs font-sans font-bold uppercase tracking-wider rounded transition-colors inline-flex items-center gap-1.5 cursor-pointer shadow-sm"
+                        className="w-full sm:w-auto min-h-[44px] justify-center px-4 py-2 bg-[#D4AF37] hover:bg-stone-900 hover:text-white text-[#1A365D] text-xs font-sans font-bold uppercase tracking-wider rounded transition-colors inline-flex items-center gap-1.5 cursor-pointer shadow-sm"
                       >
                         <GraduationCap className="w-4 h-4" />
                         <span>{t('navApplyNow')}</span>
