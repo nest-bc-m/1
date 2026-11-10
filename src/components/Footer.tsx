@@ -189,7 +189,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <span className="font-bold text-[#1A365D]">Dip.Th</span> — Diploma in Theology (2 Yrs)
               </li>
               <li className="text-slate-700">
-                <span className="font-bold text-[#1A365D]">C.Min</span> — Christian Ministry Certificate
+                <span className="font-bold text-[#1A365D]">Distance</span> — B.Th, M.Div &amp; Dip.Th External
               </li>
             </ul>
 

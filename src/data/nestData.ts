@@ -331,47 +331,6 @@ export const ACADEMIC_PROGRAMS: AcademicProgram[] = [
     ],
     featured: false,
     ataAccredited: true
-  },
-  {
-    id: "c-min-distance",
-    code: "C.Min (Distance)",
-    title: "Certificate in Christian Ministry — Distance",
-    titleKn: "ಕ್ರಿಶ್ಚಿಯನ್ ಮಿನಿಸ್ಟ್ರಿ ಸರ್ಟಿಫಿಕೇಟ್ (C.Min - ದೂರಶಿಕ್ಷಣ)",
-    programCategory: "Distance",
-    programCategoryKn: "ದೂರಶಿಕ್ಷಣ ಕಾರ್ಯಕ್ರಮ (Distance Education)",
-    degreeLevel: "Certificate",
-    duration: "6 Months – 1 Year (Flexible / Short-Term)",
-    durationKn: "6 ತಿಂಗಳಿಂದ 1 ವರ್ಷ (ಹೊಂದಿಕೊಳ್ಳುವ ಅಲ್ಪಾವಧಿ ಕೋರ್ಸ್)",
-    mode: "Distance Education / Continuing Education Certificate",
-    modeKn: "ದೂರಶಿಕ್ಷಣ / ನಿರಂತರ ಶಿಕ್ಷಣ ಪ್ರಮಾಣಪತ್ರ",
-    language: "Available in English & Kannada Tracks",
-    languageKn: "ಕನ್ನಡ ಮತ್ತು ಇಂಗ್ಲಿಷ್ ಮಾಧ್ಯಮದಲ್ಲಿ ಲಭ್ಯ",
-    eligibility: "Open to all Christian believers, church members, and youth eager to study God's Word systematically; No formal theological prerequisites.",
-    eligibilityKn: "ಸತ್ಯವೇದವನ್ನು ಕ್ರಮಬದ್ಧವಾಗಿ ಕಲಿಯಬಯಸುವ ಎಲ್ಲಾ ಕ್ರೈಸ್ತ ವಿಶ್ವಾಸಿಗಳು ಮತ್ತು ಯುವಜನರಿಗೆ ಮುಕ್ತ ಪ್ರವೇಶ.",
-    description: "A practical, non-residential foundational certificate designed to enrich every believer's Bible knowledge, devotional discipline, and everyday Christian witness in church and society.",
-    descriptionKn: "ಪ್ರತಿಯೊಬ್ಬ ಕ್ರೈಸ್ತ ವಿಶ್ವಾಸಿಯ ಸತ್ಯವೇದ ಜ್ಞಾನ, ಪ್ರಾರ್ಥನಾ ಶಿಸ್ತು ಮತ್ತು ದೈನಂದಿನ ಸಾಕ್ಷ್ಯವನ್ನು ಬಲಪಡಿಸಲು ರೂಪಿಸಲಾದ ಪ್ರಾಯೋಗಿಕ ಅಲ್ಪಾವಧಿ ದೂರಶಿಕ್ಷಣ ಕೋರ್ಸ್.",
-    contactClasses: "Self-guided workbook modules, continuous assignment reviews, and certificate awarded upon satisfactory completion.",
-    contactClassesKn: "ಸ್ವಯಂ ಅಧ್ಯಯನ ವರ್ಕ್‌ಬುಕ್‌ಗಳು, ನಿರಂತರ ಅಸೈನ್‌ಮೆಂಟ್ ಮೌಲ್ಯಮಾಪನ ಮತ್ತು ಕೋರ್ಸ್ ಮುಗಿದ ನಂತರ ಪ್ರಮಾಣಪತ್ರ.",
-    targetAudience: "Active church members, youth group leaders, worship leaders, and prospective theological candidates testing their ministry calling.",
-    targetAudienceKn: "ಸಭಾ ಸದಸ್ಯರು, ಯುವ ಮುಖಂಡರು, ಆರಾಧಕರು ಮತ್ತು ಸೇವೆಯ ಕರೆಯನ್ನು ಪರೀಕ್ಷಿಸಿಕೊಳ್ಳುತ್ತಿರುವವರು.",
-    curriculumTopics: [
-      "Lesson 1: How to Study, Understand and Apply the Holy Bible",
-      "Lesson 2: The Gospel Message, Conversion & Biblical Salvation",
-      "Lesson 3: The Person, Work & Fruit of the Holy Spirit",
-      "Lesson 4: Personal Evangelism & Everyday Workplace Witnessing",
-      "Lesson 5: Prayer Life, Spiritual Warfare & Christian Integrity",
-      "Lesson 6: Biblical Stewardship, Family Life & Servant Leadership"
-    ],
-    curriculumTopicsKn: [
-      "ಪಾಠ 1: ಸತ್ಯವೇದವನ್ನು ಅಧ್ಯಯನ ಮಾಡಿ ಅನ್ವಯಿಸುವುದು ಹೇಗೆ",
-      "ಪಾಠ 2: ಸುವಾರ್ತೆ, ಮನಸ್ಸಾಕ್ಷಿ ಬದಲಾವಣೆ ಮತ್ತು ರಕ್ಷಣೆ",
-      "ಪಾಠ 3: ಪವಿತ್ರಾತ್ಮನ ವ್ಯಕ್ತಿತ್ವ, ಕಾರ್ಯಗಳು ಮತ್ತು ಫಲಗಳು",
-      "ಪಾಠ 4: ವೈಯಕ್ತಿಕ ಸುವಾರ್ತೆ ಮತ್ತು ಕೆಲಸದ ಸ್ಥಳದಲ್ಲಿ ಸಾಕ್ಷಿ",
-      "ಪಾಠ 5: ಪ್ರಾರ್ಥನಾ ಜೀವನ, ಆತ್ಮೀಕ ಯುದ್ಧ ಮತ್ತು ಪ್ರಾಮಾಣಿಕತೆ",
-      "ಪಾಠ 6: ಸದ್ವಿಚಾರ ನಿರ್ವಹಣೆ, ಕುಟುಂಬ ಜೀವನ ಮತ್ತು ಸೇವಾ ಮನೋಭಾವ"
-    ],
-    featured: false,
-    ataAccredited: true
   }
 ];
 

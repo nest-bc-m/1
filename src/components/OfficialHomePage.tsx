@@ -96,16 +96,16 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
       id: 'dip-th',
     },
     {
-      code: 'C.Min',
-      title: 'Certificate in Christian Ministry',
-      titleKn: 'ಕ್ರಿಶ್ಚಿಯನ್ ಮಿನಿಸ್ಟ್ರಿ ಸರ್ಟಿಫಿಕೇಟ್',
-      level: 'Certificate',
-      duration: '6 Months – 1 Year',
-      mode: 'Distance Education / Continuing Education',
-      medium: 'English & Kannada Options',
-      eligibility: 'Christian believers and local church leaders',
-      description: 'A foundational study curriculum for lay leaders, Sunday school teachers, and believers seeking systematic biblical literacy.',
-      id: 'c-min-distance',
+      code: 'B.Th (Distance)',
+      title: 'Bachelor of Theology — Distance',
+      titleKn: 'ಬ್ಯಾಚುಲರ್ ಆಫ್ ಥಿಯಾಲಜಿ (ದೂರಶಿಕ್ಷಣ)',
+      level: 'Distance Degree',
+      duration: '3 Years (Flexible)',
+      mode: 'Distance Education / External',
+      medium: 'English & Kannada Medium',
+      eligibility: '10+2 / PUC passed, Christian believers & ministry workers',
+      description: 'Accredited undergraduate theological education designed for working pastors, evangelists, and church leaders through external study.',
+      id: 'b-th-distance',
     },
   ];
 
@@ -212,7 +212,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-400">Degrees Offered:</span>
-                    <span className="font-semibold text-slate-100">M.Div, B.Th, Dip.Th, C.Min</span>
+                    <span className="font-semibold text-slate-100">M.Div, B.Th, Dip.Th (Regular &amp; Distance)</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-400">Medium:</span>

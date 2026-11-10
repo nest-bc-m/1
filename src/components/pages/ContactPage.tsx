@@ -270,7 +270,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                       <option value="b-th-distance">B.Th (Distance Education)</option>
                       <option value="m-div-distance">M.Div (Distance Education)</option>
                       <option value="dip-th-distance">Dip.Th (Distance Education)</option>
-                      <option value="c-min-distance">C.Min (Distance Certificate)</option>
                     </select>
                   </div>
                 </div>
