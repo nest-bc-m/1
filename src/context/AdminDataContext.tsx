@@ -441,13 +441,13 @@ export const INITIAL_ADMISSIONS: AdmissionSubmission[] = [
   },
 ];
 
-// Default Admin User and Password
+// Default IT Admin User and Password (Customizable)
 export const DEFAULT_ADMIN_CREDENTIALS = {
-  username: 'admin@nestmysore.org',
-  alternativeUsername: 'admin',
-  password: 'Nest@Mysore2026',
-  name: 'Rev. Santhosh K. Chacko',
-  role: 'Super Admin' as const,
+  username: 'Ajesh@nestmysore.org',
+  alternativeUsername: 'Ajesh',
+  password: 'Ajesh@nestmysore@123',
+  name: 'IT Admin (Ajesh)',
+  role: 'IT Administrator' as const,
 };
 
 interface AdminDataContextType {
@@ -488,9 +488,11 @@ interface AdminDataContextType {
   // Authentication
   isAdminLoggedIn: boolean;
   adminUser: AdminUser | null;
+  adminEmail: string;
   login: (idOrEmail: string, pass: string) => { success: boolean; error?: string };
   logout: () => void;
   changePassword: (oldPass: string, newPass: string) => { success: boolean; error?: string };
+  updateAdminCredentials: (newEmail: string, oldPass?: string, newPass?: string) => { success: boolean; error?: string };
   currentPasswordHint: string;
 
   // Global actions
@@ -576,21 +578,26 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return INITIAL_ADMISSIONS;
   });
 
-  // 7. Admin Auth State
+  // 7. Admin Auth State (Strict & Customizable for IT Admin)
+  const [adminEmail, setAdminEmail] = useState<string>(() => {
+    return localStorage.getItem('nest_admin_email_v2') || DEFAULT_ADMIN_CREDENTIALS.username;
+  });
+
   const [adminPassword, setAdminPassword] = useState<string>(() => {
-    return localStorage.getItem('nest_admin_password_v1') || DEFAULT_ADMIN_CREDENTIALS.password;
+    return localStorage.getItem('nest_admin_password_v2') || DEFAULT_ADMIN_CREDENTIALS.password;
   });
 
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(() => {
-    return localStorage.getItem('nest_admin_session_v1') === 'true';
+    return localStorage.getItem('nest_admin_session_v2') === 'true';
   });
 
   const [adminUser, setAdminUser] = useState<AdminUser | null>(() => {
-    if (localStorage.getItem('nest_admin_session_v1') === 'true') {
+    if (localStorage.getItem('nest_admin_session_v2') === 'true') {
+      const email = localStorage.getItem('nest_admin_email_v2') || DEFAULT_ADMIN_CREDENTIALS.username;
       return {
-        id: 'admin-principal',
-        username: DEFAULT_ADMIN_CREDENTIALS.username,
-        email: 'nestmysore@gmail.com',
+        id: 'it-admin-ajesh',
+        username: email,
+        email: email,
         name: DEFAULT_ADMIN_CREDENTIALS.name,
         role: DEFAULT_ADMIN_CREDENTIALS.role,
         lastLogin: new Date().toLocaleTimeString(),
@@ -625,49 +632,83 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, [admissionsList]);
 
   useEffect(() => {
-    localStorage.setItem('nest_admin_password_v1', adminPassword);
+    localStorage.setItem('nest_admin_email_v2', adminEmail);
+  }, [adminEmail]);
+
+  useEffect(() => {
+    localStorage.setItem('nest_admin_password_v2', adminPassword);
   }, [adminPassword]);
 
   // Auth Functions
   const login = (idOrEmail: string, pass: string) => {
     const cleanId = idOrEmail.trim().toLowerCase();
     const cleanPass = pass.trim();
+    const currentAdminEmail = adminEmail.trim().toLowerCase();
 
-    const isValidUser =
-      cleanId === DEFAULT_ADMIN_CREDENTIALS.username.toLowerCase() ||
-      cleanId === DEFAULT_ADMIN_CREDENTIALS.alternativeUsername.toLowerCase() ||
-      cleanId === 'admin@nestmysore.org' ||
-      cleanId === 'nestmysore@gmail.com';
+    // Check if entered email matches current admin email or 'ajesh'
+    const isEmailValid =
+      cleanId === currentAdminEmail ||
+      cleanId === 'ajesh@nestmysore.org' ||
+      cleanId === 'ajesh';
 
-    if (isValidUser && cleanPass === adminPassword) {
+    // Support both exact password and bracketed format [Ajesh@nestmysore@123]
+    const isPassValid =
+      cleanPass === adminPassword ||
+      cleanPass === `[${adminPassword}]` ||
+      (adminPassword === 'Ajesh@nestmysore@123' && cleanPass === '[Ajesh@nestmysore@123]');
+
+    if (isEmailValid && isPassValid) {
       setIsAdminLoggedIn(true);
       const user: AdminUser = {
-        id: 'admin-principal',
-        username: DEFAULT_ADMIN_CREDENTIALS.username,
-        email: 'nestmysore@gmail.com',
+        id: 'it-admin-ajesh',
+        username: adminEmail,
+        email: adminEmail,
         name: DEFAULT_ADMIN_CREDENTIALS.name,
         role: DEFAULT_ADMIN_CREDENTIALS.role,
         lastLogin: new Date().toLocaleString(),
       };
       setAdminUser(user);
-      localStorage.setItem('nest_admin_session_v1', 'true');
+      localStorage.setItem('nest_admin_session_v2', 'true');
       return { success: true };
     }
 
     return { 
       success: false, 
-      error: 'Invalid ID or Password. Please enter the correct administrator credentials.' 
+      error: 'Invalid Administrator Email or Password. Access denied.' 
     };
   };
 
   const logout = () => {
     setIsAdminLoggedIn(false);
     setAdminUser(null);
+    localStorage.removeItem('nest_admin_session_v2');
     localStorage.removeItem('nest_admin_session_v1');
   };
 
+  const updateAdminCredentials = (newEmail: string, oldPass?: string, newPass?: string) => {
+    const cleanEmail = newEmail.trim();
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      return { success: false, error: 'Please enter a valid administrator email address.' };
+    }
+
+    if (newPass) {
+      const isOldMatch = oldPass === adminPassword || oldPass === `[${adminPassword}]`;
+      if (!isOldMatch) {
+        return { success: false, error: 'Current password does not match.' };
+      }
+      if (newPass.length < 6) {
+        return { success: false, error: 'New password must be at least 6 characters long.' };
+      }
+      setAdminPassword(newPass);
+    }
+
+    setAdminEmail(cleanEmail);
+    return { success: true };
+  };
+
   const changePassword = (oldPass: string, newPass: string) => {
-    if (oldPass !== adminPassword) {
+    const isOldMatch = oldPass === adminPassword || oldPass === `[${adminPassword}]`;
+    if (!isOldMatch) {
       return { success: false, error: 'Current password does not match.' };
     }
     if (!newPass || newPass.length < 6) {
@@ -886,9 +927,11 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         deleteAdmissionInquiry,
         isAdminLoggedIn,
         adminUser,
+        adminEmail,
         login,
         logout,
         changePassword,
+        updateAdminCredentials,
         currentPasswordHint: adminPassword,
         resetToDefaults,
         exportDataJson,

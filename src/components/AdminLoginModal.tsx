@@ -2,19 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Lock, 
-  Key, 
   ShieldCheck, 
-  UserCheck, 
   AlertCircle, 
-  Sparkles, 
   Eye, 
   EyeOff, 
-  CheckCircle2,
-  Clock,
   ShieldAlert
 } from 'lucide-react';
-import { useAdminData, DEFAULT_ADMIN_CREDENTIALS } from '../context/AdminDataContext';
-import { NestLogo } from './NestLogo';
+import { useAdminData } from '../context/AdminDataContext';
 import { useLanguage } from '../context/LanguageContext';
 
 interface AdminLoginModalProps {
@@ -28,7 +22,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
   onClose,
   onLoginSuccess,
 }) => {
-  const { login, currentPasswordHint } = useAdminData();
+  const { login } = useAdminData();
   const { currentLanguage } = useLanguage();
 
   const [idOrEmail, setIdOrEmail] = useState('');
@@ -110,18 +104,20 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           setLockoutUntil(lockTime);
           sessionStorage.setItem('nest_admin_lockout_until', String(lockTime));
           setRemainingLockSeconds(30);
-          setError('Security Lockout: 5 failed login attempts. Please wait 30 seconds before trying again.');
+          setError(
+            currentLanguage === 'kn'
+              ? 'ಸುರಕ್ಷತಾ ಲಾಕ್‌ಔಟ್: 5 ಬಾರಿ ವಿಫಲ ಪ್ರಯತ್ನಗಳು. ದಯವಿಟ್ಟು 30 ಸೆಕೆಂಡುಗಳ ನಂತರ ಪ್ರಯತ್ನಿಸಿ.'
+              : 'Security Lockout: 5 failed login attempts. Please wait 30 seconds before trying again.'
+          );
         } else {
-          setError(`${res.error || 'Invalid credentials'}. (Attempt ${nextAttempts} of 5)`);
+          setError(
+            `${res.error || (currentLanguage === 'kn' ? 'ತಪ್ಪಾದ ರುಜುವಾತುಗಳು' : 'Invalid credentials')}. (${
+              currentLanguage === 'kn' ? 'ಪ್ರಯತ್ನ' : 'Attempt'
+            } ${nextAttempts} / 5)`
+          );
         }
       }
     }, 350);
-  };
-
-  const handleQuickFill = () => {
-    setIdOrEmail(DEFAULT_ADMIN_CREDENTIALS.username);
-    setPassword(currentPasswordHint);
-    setError(null);
   };
 
   return (
@@ -163,53 +159,18 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           <div className="p-4 bg-red-950/90 border-b border-red-500/60 text-red-200 text-xs flex items-center gap-2.5 animate-pulse">
             <ShieldAlert className="w-5 h-5 text-red-400 flex-shrink-0" />
             <div>
-              <span className="font-bold block">Rate-Limit Lockout Active</span>
-              <span>Temporary brute-force protection. Unlock in <strong>{remainingLockSeconds}s</strong></span>
+              <span className="font-bold block">
+                {currentLanguage === 'kn' ? 'ದರ-ಮಿತಿ ಲಾಕ್‌ಔಟ್ ಸಕ್ರಿಯವಾಗಿದೆ' : 'Rate-Limit Lockout Active'}
+              </span>
+              <span>
+                {currentLanguage === 'kn'
+                  ? `ಹಲವು ವಿಫಲ ಪ್ರಯತ್ನಗಳ ಕಾರಣ ತಾತ್ಕಾಲಿಕ ರಕ್ಷಣೆ. ಪುನಃ ಪ್ರಯತ್ನಿಸಲು: `
+                  : `Temporary brute-force protection active. Unlock in `}
+                <strong>{remainingLockSeconds}s</strong>
+              </span>
             </div>
           </div>
         )}
-
-        {/* Credentials Notice Box for Quick Demo Access */}
-        <div className="p-4 sm:p-5 bg-[#0e1d33] border-b border-white/10 space-y-3">
-          <div className="flex items-start gap-2.5">
-            <Sparkles className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
-            <div className="space-y-0.5">
-              <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider block">
-                {currentLanguage === 'kn' ? 'ಅಧಿಕೃತ ಅಡ್ಮಿನ್ ರುಜುವಾತುಗಳು (Credentials)' : 'Authorized Admin Credentials'}
-              </span>
-              <p className="text-[11px] text-slate-300 leading-relaxed">
-                Full authority to view and export student registrations, generate printable receipts, and manage courses.
-              </p>
-            </div>
-          </div>
-
-          {/* Credential Details Card */}
-          <div className="p-3 rounded-xl bg-[#1A365D]/80 border border-[#D4AF37]/40 text-xs font-mono space-y-1.5 shadow-inner">
-            <div className="flex items-center justify-between text-slate-300">
-              <span className="text-[#D4AF37] font-sans font-semibold text-[11px]">Admin ID / Email:</span>
-              <span className="font-bold text-white select-all">{DEFAULT_ADMIN_CREDENTIALS.username}</span>
-            </div>
-            <div className="flex items-center justify-between text-slate-300 border-t border-white/10 pt-1.5">
-              <span className="text-[#D4AF37] font-sans font-semibold text-[11px]">Password:</span>
-              <span className="font-bold text-[#D4AF37] select-all">{currentPasswordHint}</span>
-            </div>
-          </div>
-
-          {/* Quick One-Click Auto Fill Button */}
-          <button
-            type="button"
-            disabled={isLockedOut}
-            onClick={handleQuickFill}
-            className="w-full py-2 px-3 rounded-lg bg-[#D4AF37]/20 hover:bg-[#D4AF37]/30 disabled:opacity-50 text-[#D4AF37] border border-[#D4AF37]/50 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-          >
-            <Key className="w-3.5 h-3.5" />
-            <span>
-              {currentLanguage === 'kn'
-                ? '⚡ ಒಂದೇ ಕ್ಲಿಕ್‌ನಲ್ಲಿ ರುಜುವಾತು ತುಂಬಿರಿ (One-Click Fill)'
-                : '⚡ Auto-Fill Credentials for Quick Access'}
-            </span>
-          </button>
-        </div>
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
@@ -223,16 +184,17 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           {/* ID / Username Field */}
           <div className="space-y-1">
             <label className="text-xs font-bold text-slate-200 block">
-              {currentLanguage === 'kn' ? 'ಅಡ್ಮಿನ್ ಐಡಿ ಅಥವಾ ಇಮೇಲ್' : 'Administrator ID / Email'}
+              {currentLanguage === 'kn' ? 'ಅಡ್ಮಿನ್ ಇಮೇಲ್ / ಐಡಿ' : 'Administrator Email / ID'}
             </label>
             <div className="relative">
               <input
                 type="text"
                 required
+                autoComplete="username"
                 disabled={isLockedOut}
                 value={idOrEmail}
                 onChange={(e) => setIdOrEmail(e.target.value)}
-                placeholder="admin@nestmysore.org"
+                placeholder={currentLanguage === 'kn' ? 'ಅಡ್ಮಿನ್ ಇಮೇಲ್ ನಮೂದಿಸಿ' : 'Enter Admin Email'}
                 className="w-full px-4 py-2.5 rounded-xl bg-[#0c182b] border border-white/20 focus:border-[#D4AF37] focus:outline-none text-white text-xs sm:text-sm disabled:opacity-50"
               />
             </div>
@@ -247,17 +209,18 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
+                autoComplete="current-password"
                 disabled={isLockedOut}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••••••"
+                placeholder={currentLanguage === 'kn' ? 'ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ' : 'Enter your password'}
                 className="w-full px-4 py-2.5 pr-10 rounded-xl bg-[#0c182b] border border-white/20 focus:border-[#D4AF37] focus:outline-none text-white text-xs sm:text-sm disabled:opacity-50"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer"
-                title={showPassword ? 'Hide' : 'Show'}
+                title={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -284,9 +247,9 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
             </button>
           </div>
 
-          {/* Notice footer */}
-          <div className="pt-1 text-center text-[10.5px] text-slate-400">
-            <span>Official Desk: Rev. Santhosh K. Chacko · Native Evangelical School of Theology</span>
+          {/* Secure Notice footer */}
+          <div className="pt-2 text-center text-[10.5px] text-slate-400 border-t border-white/10">
+            <span>Authorized IT Administrator Access Only · NEST Mysore</span>
           </div>
         </form>
 

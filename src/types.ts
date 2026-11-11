@@ -196,7 +196,7 @@ export interface AdminUser {
   username: string;
   email: string;
   name: string;
-  role: 'Super Admin' | 'Principal' | 'Academic Dean';
+  role: 'Super Admin' | 'Principal' | 'Academic Dean' | 'IT Administrator';
   lastLogin?: string;
 }
 

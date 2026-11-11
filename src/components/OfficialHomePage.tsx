@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   BookOpen, 
   GraduationCap, 
@@ -12,12 +12,14 @@ import {
   Eye, 
   Target, 
   Quote, 
-  ExternalLink 
+  ExternalLink,
+  Sparkles
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAdminData } from '../context/AdminDataContext';
 import { NestLogo } from './NestLogo';
 import { getAssetUrl, handleImageError } from '../utils/assetHelper';
+import { HeroLogo3D } from './HeroLogo3D';
 
 interface OfficialHomePageProps {
   onNavigate: (page: 'home' | 'about' | 'programs' | 'faculty' | 'campus' | 'admissions' | 'contact') => void;
@@ -185,51 +187,41 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
 
             </div>
 
-            {/* Right Column: Institutional Seal & Operational Summary */}
-            <div className="lg:col-span-4 flex flex-col items-center w-full">
-              <div className="w-full max-w-sm bg-[#112440]/90 border border-white/15 rounded-xl p-4 sm:p-6 shadow-xl space-y-5 text-center">
-                <div className="flex justify-center">
-                  <NestLogo size="xl" variant="badge" />
-                </div>
-                
-                <div className="space-y-1 border-t border-white/10 pt-4">
-                  <p className="font-serif font-bold text-white text-sm">
-                    {institutionInfo.name}
-                  </p>
-                  <p className="text-xs text-[#D4AF37] font-sans">
-                    Nagarthalli, Rayanakere P. O, Mysore - 570008
-                  </p>
-                </div>
+            {/* Right Column: Official 3D NEST Seminary Emblem & Credentials */}
+            <div className="lg:col-span-4 flex flex-col items-center w-full space-y-3">
+              
+              {/* Sole Official 3D Element: Interactive NEST Logo Emblem */}
+              <div className="w-full max-w-sm space-y-3 animate-in fade-in duration-300">
+                <HeroLogo3D 
+                  className="w-full"
+                  badgeTitle={currentLanguage === 'kn' ? 'ಅಧಿಕೃತ ಸಂಸ್ಥೆಯ ಮುದ್ರೆ · 3D' : 'Official Seminary Emblem · 3D'}
+                  subTitle={currentLanguage === 'kn' ? 'ಸ್ಪರ್ಶಿಸಿ ತಿರುಗಿಸಿ · ATA India ಮಾನ್ಯತೆ' : 'Drag to Rotate 3D Seal · ATA India Accredited'}
+                />
 
-                <div className="border-t border-white/10 pt-4 space-y-2 text-left text-xs font-sans text-slate-300">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400">Affiliation:</span>
-                    <span className="font-semibold text-slate-100">ATA India Accredited</span>
+                {/* Quick-Glance Accreditation & Credentials Strip */}
+                <div className="bg-[#112440]/90 border border-white/15 rounded-2xl p-3.5 text-xs font-sans text-slate-300 space-y-2 shadow-lg">
+                  <div className="flex items-center justify-between text-[11.5px]">
+                    <span className="text-slate-400">Accreditation:</span>
+                    <span className="font-semibold text-[#D4AF37]">ATA India Accredited</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400">Academic Year:</span>
-                    <span className="font-semibold text-slate-100">2026–2027 Intake</span>
+                  <div className="flex items-center justify-between text-[11.5px]">
+                    <span className="text-slate-400">Academic Intake:</span>
+                    <span className="font-semibold text-slate-100">2026–2027 Admissions Open</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400">Degrees Offered:</span>
-                    <span className="font-semibold text-slate-100">M.Div, B.Th, Dip.Th (Regular &amp; Distance)</span>
+                  <div className="flex items-center justify-between text-[11.5px]">
+                    <span className="text-slate-400">Programs:</span>
+                    <span className="font-semibold text-slate-100">M.Div · B.Th · Dip.Th</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400">Medium:</span>
-                    <span className="font-semibold text-slate-100">English &amp; Bilingual Track</span>
+                  <div className="pt-1 border-t border-white/10">
+                    <a
+                      href={`tel:${institutionInfo.phone}`}
+                      className="w-full py-2 px-3 bg-[#1A365D] hover:bg-[#204373] text-[#D4AF37] border border-[#D4AF37]/40 rounded-xl text-[11px] font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Phone className="w-3.5 h-3.5 text-[#D4AF37]" />
+                      <span>Admissions Desk: {institutionInfo.phoneFormatted}</span>
+                    </a>
                   </div>
                 </div>
-
-                <div className="pt-2">
-                  <a
-                    href={`tel:${institutionInfo.phone}`}
-                    className="w-full py-2.5 px-3 bg-[#1A365D] hover:bg-[#204373] text-[#D4AF37] border border-[#D4AF37]/50 rounded text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
-                  >
-                    <Phone className="w-3.5 h-3.5 text-[#D4AF37]" />
-                    <span>Office: {institutionInfo.phoneFormatted}</span>
-                  </a>
-                </div>
-
               </div>
             </div>
 
@@ -631,7 +623,7 @@ export const OfficialHomePage: React.FC<OfficialHomePageProps> = ({
                     {currentLanguage === 'kn' ? 'ಪ್ರಾಂಶುಪಾಲರು & ಸಂಸ್ಥಾಪಕರು' : 'Principal & Founder'}
                   </p>
                   <p className="font-mono text-[11px] text-stone-500">
-                    M.Th (New Testament), B.D, B.Th
+                    M.Th (Old Testament), B.D.
                   </p>
                 </div>
               </div>

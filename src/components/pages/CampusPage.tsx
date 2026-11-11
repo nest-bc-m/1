@@ -12,6 +12,7 @@ import {
 import { useLanguage } from '../../context/LanguageContext';
 import { useAdminData } from '../../context/AdminDataContext';
 import { getAssetUrl, handleImageError } from '../../utils/assetHelper';
+import { Gallery3DTiltCard } from '../Gallery3DTiltCard';
 
 interface CampusPageProps {
   onNavigate: (page: 'home' | 'about' | 'programs' | 'faculty' | 'campus' | 'admissions' | 'contact') => void;
@@ -146,39 +147,15 @@ export const CampusPage: React.FC<CampusPageProps> = ({ onNavigate, onOpenApplyM
             </div>
           </div>
 
-          {/* Photo Grid */}
+          {/* Photo Grid with 3D Tilt & Elevation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPhotos.map((photo, idx) => (
-              <div
+              <Gallery3DTiltCard
                 key={photo.id}
-                onClick={() => setSelectedPhotoIndex(idx)}
-                className="group bg-white border border-stone-300 rounded-lg overflow-hidden hover:border-[#C5A059] transition-all cursor-pointer shadow-sm hover:shadow"
-              >
-                <div className="relative aspect-[4/3] bg-stone-200 overflow-hidden">
-                  <img
-                    src={getAssetUrl(photo.imageUrl, 'campus')}
-                    alt={photo.titleEn}
-                    onError={(e) => handleImageError(e, 'campus')}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102"
-                  />
-                  <div className="absolute top-2 right-2 bg-stone-900/60 text-white p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Maximize2 className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-
-                <div className="p-4 space-y-1">
-                  <div className="flex items-center justify-between text-[11px] font-sans text-stone-500">
-                    <span className="font-mono text-[#C5A059] uppercase">{currentLanguage === 'kn' ? photo.tagKn : photo.tagEn}</span>
-                    <span>{currentLanguage === 'kn' ? photo.locationKn : photo.locationEn}</span>
-                  </div>
-                  <h3 className="font-serif font-bold text-sm text-stone-900 group-hover:text-[#1A365D] transition-colors leading-snug">
-                    {currentLanguage === 'kn' ? photo.titleKn : photo.titleEn}
-                  </h3>
-                  <p className="text-xs text-stone-600 font-sans line-clamp-2">
-                    {currentLanguage === 'kn' ? photo.descKn : photo.descEn}
-                  </p>
-                </div>
-              </div>
+                photo={photo}
+                index={idx}
+                onSelect={(selectedIdx) => setSelectedPhotoIndex(selectedIdx)}
+              />
             ))}
           </div>
         </section>

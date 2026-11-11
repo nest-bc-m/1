@@ -460,8 +460,8 @@ export const FACULTY_MEMBERS: FacultyMember[] = [
     titleKn: "ಪ್ರಿನ್ಸಿಪಾಲ್",
     role: "Principal",
     roleKn: "ಪ್ರಾಂಶುಪಾಲರು",
-    qualification: "M.Th, B.D, B.Th",
-    qualificationKn: "ಎಂ.ಟಿ.ಎಚ್, ಬಿ.ಡಿ, ಬಿ.ಟಿ.ಎಚ್",
+    qualification: "M.Th (Old Testament), B.D.",
+    qualificationKn: "ಎಂ.ಟಿ.ಎಚ್ (ಹಳೆಯ ಒಡಂಬಡಿಕೆ), ಬಿ.ಡಿ.",
     department: "Executive Leadership",
     departmentKn: "ಆಡಳಿತ & ನಾಯಕತ್ವ",
     photo: getAssetUrl('assets/aistudio/pricipal_7db520a9.webp', 'principal')

@@ -25,13 +25,17 @@ function MainAppContent() {
   const [adminPortalTab, setAdminPortalTab] = useState<'overview' | 'general' | 'announcements' | 'faculty' | 'programs' | 'gallery' | 'admissions' | 'settings'>('overview');
   const [selectedProgramId, setSelectedProgramId] = useState<string>('b-th');
   
-  const handleOpenAdminPortal = (tab: any = 'overview') => {
-    setAdminPortalTab(tab);
-    setIsAdminPortalOpen(true);
-  };
-  
   const { t } = useLanguage();
   const { isAdminLoggedIn, institutionInfo } = useAdminData();
+
+  const handleOpenAdminPortal = (tab: any = 'overview') => {
+    setAdminPortalTab(tab);
+    if (!isAdminLoggedIn) {
+      setIsAdminLoginOpen(true);
+    } else {
+      setIsAdminPortalOpen(true);
+    }
+  };
 
   // Hash-based routing synchronization
   useEffect(() => {

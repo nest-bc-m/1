@@ -394,8 +394,8 @@ export const TRANSLATIONS: Translations = {
     ml: 'പ്രിൻസിപ്പൽ · നേറ്റീവ് ഇവാഞ്ചലിക്കൽ സ്കൂൾ ഓഫ് തിയോളജി, മൈസൂർ',
   },
   principalQualifications: {
-    en: 'M.Th (New Testament) · B.D · B.Th',
-    kn: 'ಎಂ.ಟಿ.ಎಚ್ (ಹೊಸ ಒಡಂಬಡಿಕೆ) · ಬಿ.ಡಿ · ಬಿ.ಟಿ.ಎಚ್',
+    en: 'M.Th (Old Testament) · B.D.',
+    kn: 'ಎಂ.ಟಿ.ಎಚ್ (ಹಳೆಯ ಒಡಂಬಡಿಕೆ) · ಬಿ.ಡಿ.',
     hi: 'एम.टी.एच (नया नियम) · बी.डी · बी.टी.एच',
     ta: 'M.Th (புதிய ஏற்பாடு) · B.D · B.Th',
     te: 'M.Th (కొత్త నిబంధన) · B.D · B.Th',

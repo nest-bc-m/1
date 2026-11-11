@@ -45,6 +45,9 @@ type TabType = 'overview' | 'general' | 'announcements' | 'faculty' | 'programs'
 
 export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onClose, initialTab = 'overview' }) => {
   const {
+    isAdminLoggedIn,
+    adminEmail,
+    updateAdminCredentials,
     institutionInfo,
     updateInstitutionInfo,
     announcements,
@@ -68,7 +71,6 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
     deleteAdmissionInquiry,
     logout,
     changePassword,
-    currentPasswordHint,
     resetToDefaults,
     exportDataJson,
     importDataJson,
@@ -159,16 +161,24 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
   const [newAnnouncementBadgeEn, setNewAnnouncementBadgeEn] = useState('Notice');
   const [newAnnouncementBadgeKn, setNewAnnouncementBadgeKn] = useState('ಸೂಚನೆ');
 
-  // Password Change State
+  // Admin Credentials State
+  const [editAdminEmail, setEditAdminEmail] = useState(adminEmail || 'Ajesh@nestmysore.org');
   const [oldPass, setOldPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [passError, setPassError] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (adminEmail) {
+      setEditAdminEmail(adminEmail);
+    }
+  }, [adminEmail]);
 
   // Admissions Filter
   const [admissionsSearch, setAdmissionsSearch] = useState('');
   const [admissionsStatusFilter, setAdmissionsStatusFilter] = useState<string>('all');
 
-  if (!isOpen) return null;
+  // Strict Authorization Guard: unauthorized users cannot view or render the portal
+  if (!isOpen || !isAdminLoggedIn) return null;
 
   const showToast = (msg: string) => {
     setSuccessMessage(msg);
@@ -302,16 +312,16 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
     showToast('New announcement published / ಹೊಸ ಸೂಚನೆ ಪ್ರಕಟಿಸಲಾಗಿದೆ!');
   };
 
-  const handleChangePassword = (e: React.FormEvent) => {
+  const handleUpdateCredentials = (e: React.FormEvent) => {
     e.preventDefault();
     setPassError(null);
-    const res = changePassword(oldPass, newPass);
+    const res = updateAdminCredentials(editAdminEmail, oldPass ? oldPass : undefined, newPass ? newPass : undefined);
     if (res.success) {
-      showToast('Password updated successfully / ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾಯಿಸಲಾಗಿದೆ!');
+      showToast(currentLanguage === 'kn' ? 'ಅಡ್ಮಿನ್ ರುಜುವಾತುಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ!' : 'Admin credentials updated successfully!');
       setOldPass('');
       setNewPass('');
     } else {
-      setPassError(res.error || 'Failed to update password');
+      setPassError(res.error || 'Failed to update credentials');
     }
   };
 
@@ -1509,12 +1519,20 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
                   </p>
                 </div>
 
-                {/* Password Change Box */}
-                <form onSubmit={handleChangePassword} className="p-5 rounded-2xl bg-[#112440] border border-white/15 space-y-4">
+                {/* IT Administrator Credentials & Security Box */}
+                <form onSubmit={handleUpdateCredentials} className="p-5 rounded-2xl bg-[#112440] border border-white/15 space-y-4">
                   <div className="flex items-center gap-2 text-sm font-bold text-[#D4AF37]">
                     <Key className="w-4 h-4" />
-                    <span>{currentLanguage === 'kn' ? 'ಅಡ್ಮಿನ್ ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾಯಿಸಿ' : 'Change Administrator Password'}</span>
+                    <span>
+                      {currentLanguage === 'kn' ? 'ಐಟಿ ಅಡ್ಮಿನ್ ರುಜುವಾತುಗಳು & ಪಾಸ್‌ವರ್ಡ್ ನಿರ್ವಹಣೆ' : 'IT Administrator Credentials & Security'}
+                    </span>
                   </div>
+
+                  <p className="text-xs text-slate-300 font-sans">
+                    {currentLanguage === 'kn'
+                      ? 'ಐಟಿ ಅಡ್ಮಿನಿಸ್ಟ್ರೇಟರ್ ಇಮೇಲ್ ಮತ್ತು ಲಾಗಿನ್ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಇಲ್ಲಿ ಕಾನ್ಫಿಗರ್ ಮಾಡಿ.'
+                      : 'Configure the authorized IT Administrator login email and secure access password.'}
+                  </p>
 
                   {passError && (
                     <div className="p-2.5 rounded-lg bg-red-950/80 border border-red-500/50 text-red-200 text-xs">
@@ -1522,38 +1540,60 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
                     </div>
                   )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-3">
                     <div className="space-y-1">
-                      <label className="text-xs text-slate-300">Current Password</label>
+                      <label className="text-xs text-slate-300 flex items-center gap-1.5 font-medium">
+                        <Mail className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        <span>{currentLanguage === 'kn' ? 'ಅಡ್ಮಿನ್ ಇಮೇಲ್ ವಿಳಾಸ' : 'Admin Login Email'}</span>
+                      </label>
                       <input
-                        type="password"
+                        type="email"
                         required
-                        value={oldPass}
-                        onChange={(e) => setOldPass(e.target.value)}
-                        placeholder="Current password"
-                        className="w-full px-3 py-2 rounded-lg bg-[#0c182b] border border-white/20 text-xs text-white"
+                        value={editAdminEmail}
+                        onChange={(e) => setEditAdminEmail(e.target.value)}
+                        placeholder="Ajesh@nestmysore.org"
+                        className="w-full px-3 py-2 rounded-lg bg-[#0c182b] border border-white/20 text-xs text-white focus:border-[#D4AF37] focus:outline-none"
                       />
                     </div>
 
-                    <div className="space-y-1">
-                      <label className="text-xs text-slate-300">New Password (min 6 chars)</label>
-                      <input
-                        type="password"
-                        required
-                        value={newPass}
-                        onChange={(e) => setNewPass(e.target.value)}
-                        placeholder="New strong password"
-                        className="w-full px-3 py-2 rounded-lg bg-[#0c182b] border border-white/20 text-xs text-white"
-                      />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                      <div className="space-y-1">
+                        <label className="text-xs text-slate-300">
+                          {currentLanguage === 'kn' ? 'ಪ್ರಸ್ತುತ ಪಾಸ್‌ವರ್ಡ್' : 'Current Password (to verify)'}
+                        </label>
+                        <input
+                          type="password"
+                          value={oldPass}
+                          onChange={(e) => setOldPass(e.target.value)}
+                          placeholder="Current password"
+                          className="w-full px-3 py-2 rounded-lg bg-[#0c182b] border border-white/20 text-xs text-white focus:border-[#D4AF37] focus:outline-none"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs text-slate-300">
+                          {currentLanguage === 'kn' ? 'ಹೊಸ ಪಾಸ್‌ವರ್ಡ್ (ಐಚ್ಛಿಕ)' : 'New Password (leave blank to keep current)'}
+                        </label>
+                        <input
+                          type="password"
+                          value={newPass}
+                          onChange={(e) => setNewPass(e.target.value)}
+                          placeholder="New strong password"
+                          className="w-full px-3 py-2 rounded-lg bg-[#0c182b] border border-white/20 text-xs text-white focus:border-[#D4AF37] focus:outline-none"
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="px-4 py-2 rounded-lg bg-[#D4AF37] hover:bg-white text-[#1A365D] font-bold text-xs uppercase tracking-wider cursor-pointer"
-                  >
-                    Update Password
-                  </button>
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      className="px-5 py-2.5 rounded-lg bg-[#D4AF37] hover:bg-white text-[#1A365D] font-bold text-xs uppercase tracking-wider cursor-pointer transition-colors shadow-md flex items-center gap-2"
+                    >
+                      <ShieldCheck className="w-4 h-4" />
+                      <span>{currentLanguage === 'kn' ? 'ರುಜುವಾತುಗಳನ್ನು ನವೀಕರಿಸಿ' : 'Save Admin Credentials'}</span>
+                    </button>
+                  </div>
                 </form>
 
                 {/* Export / Backup Box */}

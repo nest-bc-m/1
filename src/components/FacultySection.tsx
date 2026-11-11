@@ -89,7 +89,7 @@ export const FacultySection: React.FC<FacultySectionProps> = ({ onOpenApplyModal
               {/* Verified Qualification Badge */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-white/10 border border-[#D4AF37]/40 text-xs sm:text-sm font-mono text-[#D4AF37] font-bold">
                 <GraduationCap className="w-4 h-4 text-[#D4AF37]" />
-                <span>M.Th (New Testament) • B.D • B.Th</span>
+                <span>M.Th (Old Testament) • B.D.</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs font-sans">

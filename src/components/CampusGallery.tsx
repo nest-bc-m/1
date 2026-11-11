@@ -18,6 +18,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAdminData } from '../context/AdminDataContext';
 import { GalleryPhotoItem } from '../types';
 import { getAssetUrl, handleImageError } from '../utils/assetHelper';
+import { Gallery3DTiltCard } from './Gallery3DTiltCard';
 
 export const CampusGallery: React.FC = () => {
   const { currentLanguage } = useLanguage();
@@ -233,68 +234,15 @@ export const CampusGallery: React.FC = () => {
           })}
         </div>
 
-        {/* Responsive Photo Grid (3 Columns Desktop, 2 Tablet, 1 Mobile) */}
+        {/* Responsive Photo Grid with 3D Tilt & Elevation */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredPhotos.map((photo, index) => (
-            <div
+            <Gallery3DTiltCard
               key={photo.id}
-              onClick={() => setSelectedPhotoIndex(index)}
-              className="group bg-white rounded-2xl overflow-hidden border-2 border-[#D1C7B7] hover:border-[#D4AF37] transition-all duration-300 hover:shadow-2xl flex flex-col justify-between cursor-pointer"
-            >
-              {/* Photo Image Frame */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900 border-b border-[#D1C7B7]">
-                
-                <img
-                  src={getAssetUrl(photo.imageUrl, 'campus')}
-                  alt={currentLanguage === 'kn' ? photo.titleKn : photo.titleEn}
-                  onError={(e) => handleImageError(e, 'campus')}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 opacity-70 group-hover:opacity-90 transition-opacity"></div>
-
-                {/* Top Overlay Kicker */}
-                <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
-                  <span className="text-[11px] font-sans font-bold uppercase tracking-wider text-[#D4AF37] drop-shadow">
-                    {currentLanguage === 'kn' ? photo.tagKn : photo.tagEn}
-                  </span>
-
-                  <div className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 group-hover:text-[#D4AF37] group-hover:scale-110 transition-all border border-white/20">
-                    <ZoomIn className="w-4 h-4" />
-                  </div>
-                </div>
-
-                {/* Bottom Overlay Title on Image */}
-                <div className="absolute bottom-3 left-3 right-3 z-10 pointer-events-none">
-                  <h3 className="font-serif font-bold text-white text-base sm:text-lg leading-snug drop-shadow-md">
-                    {currentLanguage === 'kn' ? photo.titleKn : photo.titleEn}
-                  </h3>
-                  <div className="flex items-center gap-1 text-[11px] text-[#D4AF37] font-sans font-medium mt-1">
-                    <MapPin className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate">{currentLanguage === 'kn' ? photo.locationKn : photo.locationEn}</span>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Card Body & Description */}
-              <div className="p-4 sm:p-5 space-y-2.5 bg-white flex-grow flex flex-col justify-between">
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans line-clamp-2">
-                  {currentLanguage === 'kn' ? photo.descKn : photo.descEn}
-                </p>
-
-                <div className="pt-2.5 border-t border-[#E5DFD3] flex items-center justify-between text-[11px] font-sans text-slate-500">
-                  <span className="font-semibold text-[#1A365D]">Native Evangelical School</span>
-                  <span className="text-[#D4AF37] font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                    <span>{currentLanguage === 'kn' ? 'ದೊಡ್ಡದಾಗಿ ನೋಡಿ' : 'View Full Image'}</span>
-                    <span>→</span>
-                  </span>
-                </div>
-              </div>
-
-            </div>
+              photo={photo}
+              index={index}
+              onSelect={(idx) => setSelectedPhotoIndex(idx)}
+            />
           ))}
         </div>
 

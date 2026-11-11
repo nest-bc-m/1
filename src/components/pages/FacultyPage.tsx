@@ -187,10 +187,10 @@ export const FacultyPage: React.FC<FacultyPageProps> = ({ onNavigate, onOpenAppl
                   />
                 </div>
                 <div className="space-y-1">
-                  <span className="font-mono text-xs font-bold text-[#C5A059] uppercase">Department of New Testament</span>
+                  <span className="font-mono text-xs font-bold text-[#C5A059] uppercase">Department of Old Testament</span>
                   <h3 className="font-serif font-bold text-lg text-[#1A365D]">Rev. Santhosh K. Chacko</h3>
-                  <p className="text-xs text-stone-600 font-sans">Principal &amp; Senior Lecturer in New Testament</p>
-                  <p className="font-mono text-xs text-stone-500">M.Th, B.D, B.Th</p>
+                  <p className="text-xs text-stone-600 font-sans">Principal &amp; Senior Lecturer in Old Testament</p>
+                  <p className="font-mono text-xs text-stone-500">M.Th (Old Testament), B.D.</p>
                 </div>
               </div>
 
