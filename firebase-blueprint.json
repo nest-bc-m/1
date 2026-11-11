@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "Program": {
+      "title": "Program",
+      "description": "Academic theological degree and diploma courses offered by NEST",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "titleEn": { "type": "string", "maxLength": 200 },
+        "titleKn": { "type": "string", "maxLength": 200 },
+        "levelEn": { "type": "string", "maxLength": 100 },
+        "levelKn": { "type": "string", "maxLength": 100 },
+        "durationEn": { "type": "string", "maxLength": 100 },
+        "durationKn": { "type": "string", "maxLength": 100 },
+        "mediumEn": { "type": "string", "maxLength": 100 },
+        "mediumKn": { "type": "string", "maxLength": 100 },
+        "descriptionEn": { "type": "string", "maxLength": 1000 },
+        "descriptionKn": { "type": "string", "maxLength": 1000 },
+        "eligibilityEn": { "type": "string", "maxLength": 500 },
+        "eligibilityKn": { "type": "string", "maxLength": 500 },
+        "category": { "type": "string", "maxLength": 50 },
+        "isAvailable": { "type": "boolean" }
+      },
+      "required": ["id", "titleEn", "category"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Official college bulletins, notices, and exam schedules",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "titleEn": { "type": "string", "maxLength": 300 },
+        "titleKn": { "type": "string", "maxLength": 300 },
+        "date": { "type": "string", "maxLength": 50 },
+        "badgeEn": { "type": "string", "maxLength": 50 },
+        "badgeKn": { "type": "string", "maxLength": 50 },
+        "isUrgent": { "type": "boolean" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["id", "titleEn", "date", "isActive"]
+    },
+    "AdmissionInquiry": {
+      "title": "AdmissionInquiry",
+      "description": "Student candidate applications and admission inquiries",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 150 },
+        "programId": { "type": "string", "maxLength": 50 },
+        "programName": { "type": "string", "maxLength": 150 },
+        "cityState": { "type": "string", "maxLength": 150 },
+        "qualification": { "type": "string", "maxLength": 150 },
+        "churchName": { "type": "string", "maxLength": 150 },
+        "callingBrief": { "type": "string", "maxLength": 1000 },
+        "housingNeeded": { "type": "boolean" },
+        "status": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "fullName", "phone", "programId"]
+    }
+  },
+  "firestore": {
+    "/programs/{programId}": {
+      "schema": "Program",
+      "description": "Academic degree and diploma courses"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Institutional updates and announcements"
+    },
+    "/admissions/{admissionId}": {
+      "schema": "AdmissionInquiry",
+      "description": "Student admissions and inquiries"
+    }
+  }
+}

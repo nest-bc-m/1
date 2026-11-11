@@ -9,6 +9,20 @@ import {
 } from '../types';
 import { INSTITUTION_INFO, FACULTY_MEMBERS, ACADEMIC_PROGRAMS } from '../data/nestData';
 import { getAssetUrl } from '../utils/assetHelper';
+import { 
+  db, 
+  auth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  firebaseSignOut,
+  doc, 
+  collection, 
+  onSnapshot, 
+  setDoc, 
+  deleteDoc, 
+  handleFirestoreError, 
+  OperationType 
+} from '../lib/firebase';
 
 // Initial Gallery Photos (18 authentic photos uploaded by user)
 export const INITIAL_GALLERY_PHOTOS: GalleryPhotoItem[] = [
@@ -639,6 +653,79 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     localStorage.setItem('nest_admin_password_v2', adminPassword);
   }, [adminPassword]);
 
+  // Real-time Firestore Sync: Programs (Courses)
+  useEffect(() => {
+    try {
+      const unsub = onSnapshot(
+        collection(db, 'programs'),
+        (snapshot) => {
+          if (!snapshot.empty) {
+            const list: AcademicProgram[] = [];
+            snapshot.forEach((docSnap) => {
+              list.push(docSnap.data() as AcademicProgram);
+            });
+            setProgramsList(list);
+          }
+        },
+        (error) => {
+          handleFirestoreError(error, OperationType.LIST, 'programs');
+        }
+      );
+      return () => unsub();
+    } catch (e) {
+      console.warn('Firestore programs listener fallback to local state:', e);
+    }
+  }, []);
+
+  // Real-time Firestore Sync: Announcements (Updates)
+  useEffect(() => {
+    try {
+      const unsub = onSnapshot(
+        collection(db, 'announcements'),
+        (snapshot) => {
+          if (!snapshot.empty) {
+            const list: AnnouncementItem[] = [];
+            snapshot.forEach((docSnap) => {
+              list.push(docSnap.data() as AnnouncementItem);
+            });
+            setAnnouncements(list);
+          }
+        },
+        (error) => {
+          handleFirestoreError(error, OperationType.LIST, 'announcements');
+        }
+      );
+      return () => unsub();
+    } catch (e) {
+      console.warn('Firestore announcements listener fallback to local state:', e);
+    }
+  }, []);
+
+  // Real-time Firestore Sync: Candidate Admissions
+  useEffect(() => {
+    if (!isAdminLoggedIn) return;
+    try {
+      const unsub = onSnapshot(
+        collection(db, 'admissions'),
+        (snapshot) => {
+          if (!snapshot.empty) {
+            const list: AdmissionSubmission[] = [];
+            snapshot.forEach((docSnap) => {
+              list.push(docSnap.data() as AdmissionSubmission);
+            });
+            setAdmissionsList(list);
+          }
+        },
+        (error) => {
+          handleFirestoreError(error, OperationType.LIST, 'admissions');
+        }
+      );
+      return () => unsub();
+    } catch (e) {
+      console.warn('Firestore admissions listener fallback to local state:', e);
+    }
+  }, [isAdminLoggedIn]);
+
   // Auth Functions
   const login = (idOrEmail: string, pass: string) => {
     const cleanId = idOrEmail.trim().toLowerCase();
@@ -669,6 +756,17 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       };
       setAdminUser(user);
       localStorage.setItem('nest_admin_session_v2', 'true');
+
+      // Authenticate with Firebase Auth asynchronously
+      signInWithEmailAndPassword(auth, adminEmail, adminPassword)
+        .catch(async () => {
+          try {
+            await createUserWithEmailAndPassword(auth, adminEmail, adminPassword);
+          } catch {
+            // Offline or credentials maintained locally
+          }
+        });
+
       return { success: true };
     }
 
@@ -683,6 +781,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setAdminUser(null);
     localStorage.removeItem('nest_admin_session_v2');
     localStorage.removeItem('nest_admin_session_v1');
+    firebaseSignOut(auth).catch(() => {});
   };
 
   const updateAdminCredentials = (newEmail: string, oldPass?: string, newPass?: string) => {
@@ -729,16 +828,34 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       id: `ann-${Date.now()}`,
     };
     setAnnouncements((prev) => [newItem, ...prev]);
+    setDoc(doc(db, 'announcements', newItem.id), newItem).catch((err) => {
+      handleFirestoreError(err, OperationType.CREATE, `announcements/${newItem.id}`);
+    });
   };
 
   const updateAnnouncement = (id: string, updates: Partial<AnnouncementItem>) => {
+    let updatedItem: AnnouncementItem | undefined;
     setAnnouncements((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, ...updates } : a))
+      prev.map((a) => {
+        if (a.id === id) {
+          updatedItem = { ...a, ...updates };
+          return updatedItem;
+        }
+        return a;
+      })
     );
+    if (updatedItem) {
+      setDoc(doc(db, 'announcements', id), updatedItem, { merge: true }).catch((err) => {
+        handleFirestoreError(err, OperationType.UPDATE, `announcements/${id}`);
+      });
+    }
   };
 
   const deleteAnnouncement = (id: string) => {
     setAnnouncements((prev) => prev.filter((a) => a.id !== id));
+    deleteDoc(doc(db, 'announcements', id)).catch((err) => {
+      handleFirestoreError(err, OperationType.DELETE, `announcements/${id}`);
+    });
   };
 
   const addFaculty = (member: Omit<FacultyMember, 'id'>) => {
@@ -765,16 +882,34 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       id: `prog-${Date.now()}`,
     };
     setProgramsList((prev) => [...prev, newProgram]);
+    setDoc(doc(db, 'programs', newProgram.id), newProgram).catch((err) => {
+      handleFirestoreError(err, OperationType.CREATE, `programs/${newProgram.id}`);
+    });
   };
 
   const updateProgram = (id: string, updates: Partial<AcademicProgram>) => {
+    let updatedProgram: AcademicProgram | undefined;
     setProgramsList((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...updates } : p))
+      prev.map((p) => {
+        if (p.id === id) {
+          updatedProgram = { ...p, ...updates };
+          return updatedProgram;
+        }
+        return p;
+      })
     );
+    if (updatedProgram) {
+      setDoc(doc(db, 'programs', id), updatedProgram, { merge: true }).catch((err) => {
+        handleFirestoreError(err, OperationType.UPDATE, `programs/${id}`);
+      });
+    }
   };
 
   const deleteProgram = (id: string) => {
     setProgramsList((prev) => prev.filter((p) => p.id !== id));
+    deleteDoc(doc(db, 'programs', id)).catch((err) => {
+      handleFirestoreError(err, OperationType.DELETE, `programs/${id}`);
+    });
   };
 
   const addPhoto = (photo: Omit<GalleryPhotoItem, 'id'>) => {
@@ -809,6 +944,9 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       createdAt: new Date().toISOString(),
     };
     setAdmissionsList((prev) => [newSubmission, ...prev]);
+    setDoc(doc(db, 'admissions', newSubmission.id), newSubmission).catch((err) => {
+      handleFirestoreError(err, OperationType.CREATE, `admissions/${newSubmission.id}`);
+    });
   };
 
   const updateAdmissionStatus = (id: string, status: AdmissionSubmission['status'], notes?: string) => {
