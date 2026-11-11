@@ -76,14 +76,14 @@ export const FacultyPage: React.FC<FacultyPageProps> = ({ onNavigate, onOpenAppl
                 </p>
                 <div className="pt-1">
                   <span className="font-mono text-xs text-stone-600 bg-stone-100 px-2.5 py-1 rounded inline-block">
-                    M.Th (New Testament), B.D, B.Th
+                    M.Th (Old Testament), B.D.
                   </span>
                 </div>
               </div>
 
               <div className="w-full border-t border-stone-200 pt-3 text-xs text-stone-600 space-y-1.5 text-left">
                 <div>
-                  <strong className="text-stone-800">Specialization:</strong> New Testament Exegesis &amp; Pauline Epistles
+                  <strong className="text-stone-800">Specialization:</strong> Old Testament Exegesis &amp; Pauline Epistles
                 </div>
                 <div>
                   <strong className="text-stone-800">Ministry:</strong> Pastoral Leadership &amp; Native Church Planting
