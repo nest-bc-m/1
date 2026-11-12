@@ -15,7 +15,8 @@ import {
   onSnapshot,
   setDoc,
   deleteDoc,
-  updateDoc
+  updateDoc,
+  getDocs
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
@@ -97,5 +98,6 @@ export {
   onSnapshot,
   setDoc,
   deleteDoc,
-  updateDoc
+  updateDoc,
+  getDocs
 };

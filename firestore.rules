@@ -27,6 +27,18 @@ service cloud.firestore {
       allow create, update, delete: if isSignedIn() && isValidId(announcementId);
     }
 
+    // Faculty Directory
+    match /faculty/{facultyId} {
+      allow read: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(facultyId);
+    }
+
+    // General Institutional Website Content
+    match /content/{contentId} {
+      allow read: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(contentId);
+    }
+
     // Candidate Admission Inquiries
     match /admissions/{admissionId} {
       allow read, update, delete: if isSignedIn() && isValidId(admissionId);

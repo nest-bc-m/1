@@ -75,15 +75,15 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
 
   const isLockedOut = remainingLockSeconds > 0;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLockedOut) return;
 
     setError(null);
     setLoading(true);
 
-    setTimeout(() => {
-      const res = login(idOrEmail, password);
+    try {
+      const res = await login(idOrEmail, password);
       setLoading(false);
 
       if (res.success) {
@@ -117,7 +117,10 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
           );
         }
       }
-    }, 350);
+    } catch (err: any) {
+      setLoading(false);
+      setError(err?.message || 'Authentication failed. Please verify your credentials.');
+    }
   };
 
   return (

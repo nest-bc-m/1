@@ -160,6 +160,7 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
   const [newAnnouncementTitleKn, setNewAnnouncementTitleKn] = useState('');
   const [newAnnouncementBadgeEn, setNewAnnouncementBadgeEn] = useState('Notice');
   const [newAnnouncementBadgeKn, setNewAnnouncementBadgeKn] = useState('ಸೂಚನೆ');
+  const [editingAnnouncement, setEditingAnnouncement] = useState<AnnouncementItem | null>(null);
 
   // Admin Credentials State
   const [editAdminEmail, setEditAdminEmail] = useState(adminEmail || 'Ajesh@nestmysore.org');
@@ -292,24 +293,39 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
     }
   };
 
-  const handleCreateAnnouncement = (e: React.FormEvent) => {
+  const handleSaveAnnouncement = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newAnnouncementTitleEn) return;
-    addAnnouncement({
-      badgeEn: newAnnouncementBadgeEn,
-      badgeKn: newAnnouncementBadgeKn,
-      titleEn: newAnnouncementTitleEn,
-      titleKn: newAnnouncementTitleKn || newAnnouncementTitleEn,
-      subEn: 'Native Evangelical School of Theology, Mysore',
-      subKn: 'ನೇಟಿವ್ ಇವಾಂಜೆಲಿಕಲ್ ಸ್ಕೂಲ್ ಆಫ್ ಥಿಯಾಲಜಿ, ಮೈಸೂರು',
-      linkTextEn: 'View Details',
-      linkTextKn: 'ವಿವರ ನೋಡಿ',
-      linkUrl: '#admissions',
-      isActive: true,
-    });
+
+    if (editingAnnouncement) {
+      updateAnnouncement(editingAnnouncement.id, {
+        badgeEn: newAnnouncementBadgeEn,
+        badgeKn: newAnnouncementBadgeKn,
+        titleEn: newAnnouncementTitleEn,
+        titleKn: newAnnouncementTitleKn || newAnnouncementTitleEn,
+      });
+      showToast('Announcement updated in Firestore / ಪ್ರಕಟಣೆ ನವೀಕರಿಸಲಾಗಿದೆ!');
+      setEditingAnnouncement(null);
+    } else {
+      addAnnouncement({
+        badgeEn: newAnnouncementBadgeEn,
+        badgeKn: newAnnouncementBadgeKn,
+        titleEn: newAnnouncementTitleEn,
+        titleKn: newAnnouncementTitleKn || newAnnouncementTitleEn,
+        subEn: 'Native Evangelical School of Theology, Mysore',
+        subKn: 'ನೇಟಿವ್ ಇವಾಂಜೆಲಿಕಲ್ ಸ್ಕೂಲ್ ಆಫ್ ಥಿಯಾಲಜಿ, ಮೈಸೂರು',
+        linkTextEn: 'View Details',
+        linkTextKn: 'ವಿವರ ನೋಡಿ',
+        linkUrl: '#admissions',
+        isActive: true,
+      });
+      showToast('New announcement published to Firestore / ಹೊಸ ಪ್ರಕಟಣೆ ಸೇರಿಸಲಾಗಿದೆ!');
+    }
+
     setNewAnnouncementTitleEn('');
     setNewAnnouncementTitleKn('');
-    showToast('New announcement published / ಹೊಸ ಸೂಚನೆ ಪ್ರಕಟಿಸಲಾಗಿದೆ!');
+    setNewAnnouncementBadgeEn('Notice');
+    setNewAnnouncementBadgeKn('ಸೂಚನೆ');
   };
 
   const handleUpdateCredentials = (e: React.FormEvent) => {
@@ -840,11 +856,28 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
                   </div>
                 </div>
 
-                {/* Create New Announcement Form */}
-                <form onSubmit={handleCreateAnnouncement} className="p-4 rounded-2xl bg-[#112440] border border-[#D4AF37]/40 space-y-3">
-                  <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider block font-sans">
-                    + Add New Top Announcement
-                  </span>
+                {/* Create or Edit Announcement Form */}
+                <form onSubmit={handleSaveAnnouncement} className="p-4 rounded-2xl bg-[#112440] border border-[#D4AF37]/40 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider block font-sans">
+                      {editingAnnouncement ? 'Edit Announcement (Firestore)' : '+ Add New Top Announcement (Firestore)'}
+                    </span>
+                    {editingAnnouncement && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingAnnouncement(null);
+                          setNewAnnouncementTitleEn('');
+                          setNewAnnouncementTitleKn('');
+                          setNewAnnouncementBadgeEn('Notice');
+                          setNewAnnouncementBadgeKn('ಸೂಚನೆ');
+                        }}
+                        className="text-xs text-slate-400 hover:text-white"
+                      >
+                        Cancel Edit
+                      </button>
+                    )}
+                  </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
@@ -885,8 +918,17 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
                     type="submit"
                     className="px-4 py-2 rounded-lg bg-[#D4AF37] hover:bg-white text-[#1A365D] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer"
                   >
-                    <Plus className="w-4 h-4" />
-                    <span>Publish Announcement</span>
+                    {editingAnnouncement ? (
+                      <>
+                        <Save className="w-4 h-4" />
+                        <span>Save Announcement Changes</span>
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="w-4 h-4" />
+                        <span>Publish Announcement</span>
+                      </>
+                    )}
                   </button>
                 </form>
 
@@ -911,6 +953,18 @@ export const AdminPortalModal: React.FC<AdminPortalModalProps> = ({ isOpen, onCl
                       </div>
 
                       <div className="flex items-center gap-2 self-end sm:self-center">
+                        <button
+                          onClick={() => {
+                            setEditingAnnouncement(ann);
+                            setNewAnnouncementTitleEn(ann.titleEn);
+                            setNewAnnouncementTitleKn(ann.titleKn || '');
+                            setNewAnnouncementBadgeEn(ann.badgeEn || 'Notice');
+                            setNewAnnouncementBadgeKn(ann.badgeKn || 'ಸೂಚನೆ');
+                          }}
+                          className="px-3 py-1 rounded text-xs font-bold bg-white/10 hover:bg-[#D4AF37] hover:text-[#1A365D] text-slate-200 transition-colors"
+                        >
+                          Edit
+                        </button>
                         <button
                           onClick={() => {
                             updateAnnouncement(ann.id, { isActive: !ann.isActive });

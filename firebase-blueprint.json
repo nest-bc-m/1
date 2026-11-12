@@ -39,6 +39,41 @@
       },
       "required": ["id", "titleEn", "date", "isActive"]
     },
+    "Faculty": {
+      "title": "Faculty",
+      "description": "Theological faculty instructors, dean, and mentors",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "nameEn": { "type": "string", "maxLength": 150 },
+        "nameKn": { "type": "string", "maxLength": 150 },
+        "roleEn": { "type": "string", "maxLength": 150 },
+        "roleKn": { "type": "string", "maxLength": 150 },
+        "qualificationEn": { "type": "string", "maxLength": 150 },
+        "qualificationKn": { "type": "string", "maxLength": 150 },
+        "specializationEn": { "type": "string", "maxLength": 200 },
+        "specializationKn": { "type": "string", "maxLength": 200 },
+        "bioEn": { "type": "string", "maxLength": 1000 },
+        "bioKn": { "type": "string", "maxLength": 1000 },
+        "isFeatured": { "type": "boolean" }
+      },
+      "required": ["id", "nameEn", "roleEn"]
+    },
+    "InstitutionContent": {
+      "title": "InstitutionContent",
+      "description": "General institutional profile, contact details, motto, and leadership",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "principal": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 150 },
+        "address": { "type": "string", "maxLength": 300 },
+        "motto": { "type": "string", "maxLength": 300 },
+        "mottoScripture": { "type": "string", "maxLength": 150 }
+      },
+      "required": ["id", "principal", "phone", "email"]
+    },
     "AdmissionInquiry": {
       "title": "AdmissionInquiry",
       "description": "Student candidate applications and admission inquiries",
@@ -68,6 +103,14 @@
     "/announcements/{announcementId}": {
       "schema": "Announcement",
       "description": "Institutional updates and announcements"
+    },
+    "/faculty/{facultyId}": {
+      "schema": "Faculty",
+      "description": "Theological faculty and instructional mentors"
+    },
+    "/content/{contentId}": {
+      "schema": "InstitutionContent",
+      "description": "Institutional profile and general website content"
     },
     "/admissions/{admissionId}": {
       "schema": "AdmissionInquiry",

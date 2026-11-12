@@ -503,7 +503,7 @@ interface AdminDataContextType {
   isAdminLoggedIn: boolean;
   adminUser: AdminUser | null;
   adminEmail: string;
-  login: (idOrEmail: string, pass: string) => { success: boolean; error?: string };
+  login: (idOrEmail: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   changePassword: (oldPass: string, newPass: string) => { success: boolean; error?: string };
   updateAdminCredentials: (newEmail: string, oldPass?: string, newPass?: string) => { success: boolean; error?: string };
@@ -653,7 +653,30 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     localStorage.setItem('nest_admin_password_v2', adminPassword);
   }, [adminPassword]);
 
-  // Real-time Firestore Sync: Programs (Courses)
+  // Real-time Firestore Sync: Institution Info & General Content
+  useEffect(() => {
+    try {
+      const unsub = onSnapshot(
+        doc(db, 'content', 'institution'),
+        (docSnap) => {
+          if (docSnap.exists()) {
+            setInstitutionInfo((prev) => ({ ...prev, ...docSnap.data() }));
+          } else {
+            // Seed default institutional content into Firestore
+            setDoc(doc(db, 'content', 'institution'), INSTITUTION_INFO).catch(() => {});
+          }
+        },
+        (error) => {
+          handleFirestoreError(error, OperationType.GET, 'content/institution');
+        }
+      );
+      return () => unsub();
+    } catch (e) {
+      console.warn('Firestore institution content listener fallback:', e);
+    }
+  }, []);
+
+  // Real-time Firestore Sync: Programs (Courses) with Auto-Seeding
   useEffect(() => {
     try {
       const unsub = onSnapshot(
@@ -665,6 +688,11 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
               list.push(docSnap.data() as AcademicProgram);
             });
             setProgramsList(list);
+          } else {
+            // Seed initial college programs into Firestore
+            ACADEMIC_PROGRAMS.forEach((prog) => {
+              setDoc(doc(db, 'programs', prog.id), prog).catch(() => {});
+            });
           }
         },
         (error) => {
@@ -677,7 +705,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   }, []);
 
-  // Real-time Firestore Sync: Announcements (Updates)
+  // Real-time Firestore Sync: Announcements (Updates) with Auto-Seeding
   useEffect(() => {
     try {
       const unsub = onSnapshot(
@@ -689,6 +717,11 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
               list.push(docSnap.data() as AnnouncementItem);
             });
             setAnnouncements(list);
+          } else {
+            // Seed initial announcements into Firestore
+            INITIAL_ANNOUNCEMENTS.forEach((ann) => {
+              setDoc(doc(db, 'announcements', ann.id), ann).catch(() => {});
+            });
           }
         },
         (error) => {
@@ -698,6 +731,35 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       return () => unsub();
     } catch (e) {
       console.warn('Firestore announcements listener fallback to local state:', e);
+    }
+  }, []);
+
+  // Real-time Firestore Sync: Faculty Directory with Auto-Seeding
+  useEffect(() => {
+    try {
+      const unsub = onSnapshot(
+        collection(db, 'faculty'),
+        (snapshot) => {
+          if (!snapshot.empty) {
+            const list: FacultyMember[] = [];
+            snapshot.forEach((docSnap) => {
+              list.push(docSnap.data() as FacultyMember);
+            });
+            setFacultyList(list);
+          } else {
+            // Seed initial faculty members into Firestore
+            FACULTY_MEMBERS.forEach((fac) => {
+              setDoc(doc(db, 'faculty', fac.id), fac).catch(() => {});
+            });
+          }
+        },
+        (error) => {
+          handleFirestoreError(error, OperationType.LIST, 'faculty');
+        }
+      );
+      return () => unsub();
+    } catch (e) {
+      console.warn('Firestore faculty listener fallback to local state:', e);
     }
   }, []);
 
@@ -726,8 +788,8 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   }, [isAdminLoggedIn]);
 
-  // Auth Functions
-  const login = (idOrEmail: string, pass: string) => {
+  // Auth Functions with direct Firebase Authentication
+  const login = async (idOrEmail: string, pass: string): Promise<{ success: boolean; error?: string }> => {
     const cleanId = idOrEmail.trim().toLowerCase();
     const cleanPass = pass.trim();
     const currentAdminEmail = adminEmail.trim().toLowerCase();
@@ -744,7 +806,49 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       cleanPass === `[${adminPassword}]` ||
       (adminPassword === 'Ajesh@nestmysore@123' && cleanPass === '[Ajesh@nestmysore@123]');
 
-    if (isEmailValid && isPassValid) {
+    if (!isEmailValid || !isPassValid) {
+      return { 
+        success: false, 
+        error: 'Invalid Administrator Email or Password. Access denied.' 
+      };
+    }
+
+    // Authenticate through Firebase Authentication
+    try {
+      let fbUid = 'it-admin-ajesh';
+      try {
+        const cred = await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
+        fbUid = cred.user.uid;
+      } catch (authErr: any) {
+        // If user is not yet created in this Firebase project, create it
+        if (
+          authErr?.code === 'auth/user-not-found' || 
+          authErr?.code === 'auth/invalid-credential' ||
+          authErr?.code === 'auth/wrong-password' ||
+          authErr?.code === 'auth/invalid-email'
+        ) {
+          try {
+            const newCred = await createUserWithEmailAndPassword(auth, adminEmail, adminPassword);
+            fbUid = newCred.user.uid;
+          } catch {
+            // Handled
+          }
+        }
+      }
+
+      setIsAdminLoggedIn(true);
+      const user: AdminUser = {
+        id: fbUid,
+        username: adminEmail,
+        email: adminEmail,
+        name: DEFAULT_ADMIN_CREDENTIALS.name,
+        role: DEFAULT_ADMIN_CREDENTIALS.role,
+        lastLogin: new Date().toLocaleString(),
+      };
+      setAdminUser(user);
+      localStorage.setItem('nest_admin_session_v2', 'true');
+      return { success: true };
+    } catch {
       setIsAdminLoggedIn(true);
       const user: AdminUser = {
         id: 'it-admin-ajesh',
@@ -756,24 +860,8 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       };
       setAdminUser(user);
       localStorage.setItem('nest_admin_session_v2', 'true');
-
-      // Authenticate with Firebase Auth asynchronously
-      signInWithEmailAndPassword(auth, adminEmail, adminPassword)
-        .catch(async () => {
-          try {
-            await createUserWithEmailAndPassword(auth, adminEmail, adminPassword);
-          } catch {
-            // Offline or credentials maintained locally
-          }
-        });
-
       return { success: true };
     }
-
-    return { 
-      success: false, 
-      error: 'Invalid Administrator Email or Password. Access denied.' 
-    };
   };
 
   const logout = () => {
@@ -820,6 +908,9 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // Content Management Handlers
   const updateInstitutionInfo = (updates: Partial<typeof INSTITUTION_INFO>) => {
     setInstitutionInfo((prev) => ({ ...prev, ...updates }));
+    setDoc(doc(db, 'content', 'institution'), updates, { merge: true }).catch((err) => {
+      handleFirestoreError(err, OperationType.UPDATE, 'content/institution');
+    });
   };
 
   const addAnnouncement = (item: Omit<AnnouncementItem, 'id'>) => {
@@ -864,16 +955,34 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       id: `faculty-${Date.now()}`,
     };
     setFacultyList((prev) => [newMember, ...prev]);
+    setDoc(doc(db, 'faculty', newMember.id), newMember).catch((err) => {
+      handleFirestoreError(err, OperationType.CREATE, `faculty/${newMember.id}`);
+    });
   };
 
   const updateFaculty = (id: string, updates: Partial<FacultyMember>) => {
+    let updatedMember: FacultyMember | undefined;
     setFacultyList((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, ...updates } : f))
+      prev.map((f) => {
+        if (f.id === id) {
+          updatedMember = { ...f, ...updates };
+          return updatedMember;
+        }
+        return f;
+      })
     );
+    if (updatedMember) {
+      setDoc(doc(db, 'faculty', id), updatedMember, { merge: true }).catch((err) => {
+        handleFirestoreError(err, OperationType.UPDATE, `faculty/${id}`);
+      });
+    }
   };
 
   const deleteFaculty = (id: string) => {
     setFacultyList((prev) => prev.filter((f) => f.id !== id));
+    deleteDoc(doc(db, 'faculty', id)).catch((err) => {
+      handleFirestoreError(err, OperationType.DELETE, `faculty/${id}`);
+    });
   };
 
   const addProgram = (program: Omit<AcademicProgram, 'id'>) => {
