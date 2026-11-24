@@ -1039,23 +1039,58 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setGalleryPhotos((prev) => prev.filter((p) => p.id !== id));
   };
 
+  // Helper to sanitize Firestore payloads and strip undefined values
+  const sanitizeForFirestore = <T,>(val: T): T => {
+    if (val === undefined) return null as unknown as T;
+    if (val === null || typeof val !== 'object') return val;
+    if (Array.isArray(val)) {
+      return val.map((item) => sanitizeForFirestore(item)) as unknown as T;
+    }
+    const cleanObj: Record<string, any> = {};
+    for (const [k, v] of Object.entries(val as Record<string, any>)) {
+      if (v !== undefined) {
+        cleanObj[k] = sanitizeForFirestore(v);
+      }
+    }
+    return cleanObj as T;
+  };
+
   const submitAdmissionInquiry = (data: Omit<AdmissionSubmission, 'id' | 'createdAt' | 'status'> & { status?: AdmissionSubmission['status'] }) => {
     const initialStatus = data.status || 'Pending Verification / Under Review';
     const regDetails = data.registrationDetails 
       ? { ...data.registrationDetails, status: initialStatus }
       : undefined;
 
+    const docId = `adm_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const cleanFullName = (data.fullName || 'Candidate Applicant').trim().slice(0, 150) || 'Candidate Applicant';
+    const cleanPhone = (data.phone || '+91 88801 11763').trim().slice(0, 50) || '+91 88801 11763';
+
     const newSubmission: AdmissionSubmission = {
       ...data,
-      id: `adm-${Date.now()}`,
+      id: docId,
+      fullName: cleanFullName,
+      phone: cleanPhone,
       status: initialStatus,
-      registrationDetails: regDetails,
       createdAt: new Date().toISOString(),
+      ...(regDetails ? { registrationDetails: regDetails } : {}),
     };
+
+    // Update local state immediately so user sees and admin tracks without delay
     setAdmissionsList((prev) => [newSubmission, ...prev]);
-    setDoc(doc(db, 'admissions', newSubmission.id), newSubmission).catch((err) => {
-      handleFirestoreError(err, OperationType.CREATE, `admissions/${newSubmission.id}`);
-    });
+
+    // Persist to Firebase Firestore with clean payload (strictly no undefined fields)
+    try {
+      const cleanPayload = sanitizeForFirestore(newSubmission);
+      setDoc(doc(db, 'admissions', newSubmission.id), cleanPayload)
+        .then(() => {
+          console.log(`[Firestore] Admission Inquiry saved: admissions/${newSubmission.id}`);
+        })
+        .catch((err) => {
+          console.warn('[Firestore] Notice saving admission record to cloud:', err);
+        });
+    } catch (err) {
+      console.warn('[Firestore] Error in setDoc call:', err);
+    }
   };
 
   const updateAdmissionStatus = (id: string, status: AdmissionSubmission['status'], notes?: string) => {

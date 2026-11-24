@@ -11,7 +11,6 @@ import {
   Maximize2,
   X,
   QrCode,
-  Download,
   Share2,
   Check,
   Clock,
@@ -449,24 +448,14 @@ export const AdmissionReceiptA4: React.FC<AdmissionReceiptA4Props> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            {/* Primary Print / Save PDF Button */}
+            {/* Primary Print Button Only */}
             <button
               onClick={handlePrint}
               className="px-4 py-2 bg-[#D4AF37] hover:bg-[#b5952f] text-[#1A365D] font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
-              title="Print official single-page A4 document or save as PDF"
+              title="Print official single-page A4 document"
             >
               <Printer className="w-4 h-4" />
               <span>{t('printReceiptBtn')}</span>
-            </button>
-
-            {/* Direct Save as PDF action (triggers print dialog with instruction) */}
-            <button
-              onClick={handlePrint}
-              className="px-3.5 py-2 bg-white/15 hover:bg-white/25 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 border border-white/20"
-              title="Save as PDF via browser print destination"
-            >
-              <Download className="w-4 h-4 text-[#D4AF37]" />
-              <span>{t('savePdfBtn')}</span>
             </button>
 
             {/* WhatsApp Direct Forward */}
@@ -531,14 +520,6 @@ export const AdmissionReceiptA4: React.FC<AdmissionReceiptA4Props> = ({
               <span>{t('printReceiptBtn')}</span>
             </button>
 
-            <button
-              onClick={handlePrint}
-              className="px-5 py-2.5 bg-[#D4AF37] hover:bg-[#b5952f] text-[#1A365D] font-bold text-xs uppercase tracking-wider rounded-xl shadow transition-all inline-flex items-center gap-2 cursor-pointer"
-            >
-              <Download className="w-4 h-4" />
-              <span>{t('savePdfBtn')}</span>
-            </button>
-
             <a
               href={whatsAppUrl}
               target="_blank"
@@ -568,7 +549,7 @@ export const AdmissionReceiptA4: React.FC<AdmissionReceiptA4Props> = ({
             )}
           </div>
           <p className="text-xs text-slate-600 max-w-md mx-auto">
-            💡 <strong>Digital Copy Tip:</strong> Choose <strong>&quot;Save as PDF&quot;</strong> in your browser&apos;s Print destination dropdown to save a permanent digital copy on your computer or mobile device.
+            💡 <strong>Official Document:</strong> Click <strong>&quot;{t('printReceiptBtn')}&quot;</strong> to print an official single-page A4 registration receipt for admission verification.
           </p>
         </div>
 

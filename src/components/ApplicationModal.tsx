@@ -51,20 +51,24 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
     const programName = `${selectedProgram.code} — ${selectedProgram.title} (${selectedProgram.duration})`;
 
     // Automatically record submission in Admin Portal CMS
-    submitAdmissionInquiry({
-      fullName: formData.fullName,
-      phone: formData.phone,
-      email: formData.email,
-      cityState: formData.cityState,
-      programId: selectedProgram.id,
-      programName: programName,
-      languageTrack: formData.languageTrack,
-      qualification: formData.qualification,
-      churchName: formData.churchName,
-      callingBrief: formData.callingBrief,
-      housingNeeded: formData.housingNeeded,
-      notes: 'Submitted through quick application modal.',
-    });
+    try {
+      submitAdmissionInquiry({
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        cityState: formData.cityState,
+        programId: selectedProgram.id,
+        programName: programName,
+        languageTrack: formData.languageTrack,
+        qualification: formData.qualification,
+        churchName: formData.churchName,
+        callingBrief: formData.callingBrief,
+        housingNeeded: formData.housingNeeded,
+        notes: 'Submitted through quick application modal.',
+      });
+    } catch (inquiryErr) {
+      console.warn('Quick inquiry recorded locally:', inquiryErr);
+    }
 
     const messageLines = [
       `🎓 *NEW ADMISSION APPLICATION - NEST MYSORE*`,

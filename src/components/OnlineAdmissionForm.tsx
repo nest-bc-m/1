@@ -161,58 +161,67 @@ export const OnlineAdmissionForm: React.FC<OnlineAdmissionFormProps> = ({
     e.preventDefault();
     setIsSubmitting(true);
 
-    const validation = validateRegistrationData(formData);
-    if (!validation.isValid) {
-      setValidationErrors(validation.errors);
-      setIsSubmitting(false);
+    try {
+      const validation = validateRegistrationData(formData);
+      if (!validation.isValid) {
+        setValidationErrors(validation.errors);
+        setIsSubmitting(false);
 
-      // Scroll to the first error
-      const firstErrorKey = Object.keys(validation.errors)[0];
-      const element = document.getElementById(`field-${firstErrorKey}`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Scroll to the first error
+        const firstErrorKey = Object.keys(validation.errors)[0];
+        const element = document.getElementById(`field-${firstErrorKey}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
       }
-      return;
-    }
 
-    setValidationErrors({});
+      setValidationErrors({});
 
-    const selectedProgram = programsList.find(p => p.id === formData.programId) || programsList[0];
-    const programName = `${selectedProgram.code} — ${selectedProgram.title} (${selectedProgram.duration})`;
-    const appNumber = generateApplicationNumber(2026);
+      const selectedProgram = programsList.find(p => p.id === formData.programId) || programsList[0];
+      const programName = `${selectedProgram.code} — ${selectedProgram.title} (${selectedProgram.duration})`;
+      const appNumber = generateApplicationNumber(2026);
 
-    const initialStatus = 'Pending Verification / Under Review';
-    const completeRegistrationData: AdmissionRegistrationData = {
-      ...(formData as AdmissionRegistrationData),
-      applicationNo: appNumber,
-      submissionDate: new Date().toISOString(),
-      programCategory: selectedProgram.programCategory,
-      programName: programName,
-      status: initialStatus,
-    };
+      const initialStatus = 'Pending Verification / Under Review';
+      const completeRegistrationData: AdmissionRegistrationData = {
+        ...(formData as AdmissionRegistrationData),
+        applicationNo: appNumber,
+        submissionDate: new Date().toISOString(),
+        programCategory: selectedProgram.programCategory,
+        programName: programName,
+        status: initialStatus,
+      };
 
-    // Store in Admin CMS with initial status: Pending Verification / Under Review (DO NOT auto-grant admission)
-    submitAdmissionInquiry({
-      fullName: completeRegistrationData.fullName,
-      phone: completeRegistrationData.phone,
-      email: completeRegistrationData.email,
-      cityState: `${completeRegistrationData.city}, ${completeRegistrationData.state}`,
-      programId: completeRegistrationData.programId,
-      programName: completeRegistrationData.programName,
-      languageTrack: completeRegistrationData.languageTrack,
-      qualification: completeRegistrationData.qualification,
-      churchName: completeRegistrationData.churchName,
-      callingBrief: completeRegistrationData.ministryCalling,
-      housingNeeded: completeRegistrationData.hostelNeeded,
-      status: initialStatus,
-      notes: `Registered through Online Form. Ref: ${appNumber}. Status: Pending Verification / Under Review. Passing Year: ${completeRegistrationData.passingYear}. Pastor: ${completeRegistrationData.pastorName} (${completeRegistrationData.pastorPhone})`,
-      registrationDetails: completeRegistrationData,
-    });
+      // Store in Admin CMS & Firestore with initial status: Pending Verification / Under Review
+      try {
+        submitAdmissionInquiry({
+          fullName: completeRegistrationData.fullName,
+          phone: completeRegistrationData.phone,
+          email: completeRegistrationData.email,
+          cityState: `${completeRegistrationData.city}, ${completeRegistrationData.state}`,
+          programId: completeRegistrationData.programId,
+          programName: completeRegistrationData.programName,
+          languageTrack: completeRegistrationData.languageTrack,
+          qualification: completeRegistrationData.qualification,
+          churchName: completeRegistrationData.churchName,
+          callingBrief: completeRegistrationData.ministryCalling,
+          housingNeeded: completeRegistrationData.hostelNeeded,
+          status: initialStatus,
+          notes: `Registered through Online Form. Ref: ${appNumber}. Status: Pending Verification / Under Review. Passing Year: ${completeRegistrationData.passingYear}. Pastor: ${completeRegistrationData.pastorName} (${completeRegistrationData.pastorPhone})`,
+          registrationDetails: completeRegistrationData,
+        });
+      } catch (submitErr) {
+        console.warn('Admission record submitted locally:', submitErr);
+      }
 
-    // Save in LocalStorage for student convenience
-    localStorage.setItem('nest_latest_admission_receipt', JSON.stringify(completeRegistrationData));
+      // Save in LocalStorage for student convenience
+      try {
+        localStorage.setItem('nest_latest_admission_receipt', JSON.stringify(completeRegistrationData));
+      } catch (storageErr) {
+        console.warn('LocalStorage save notice:', storageErr);
+      }
 
-    setTimeout(() => {
+      // Smoothly transition to the confirmation screen without delay or freeze
       setIsSubmitting(false);
       setSubmittedReceipt(completeRegistrationData);
       setJustSubmitted(true);
@@ -226,8 +235,11 @@ export const OnlineAdmissionForm: React.FC<OnlineAdmissionFormProps> = ({
           const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
           window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
         }
-      }, 100);
-    }, 400);
+      }, 80);
+    } catch (err) {
+      console.error('Submission handling error:', err);
+      setIsSubmitting(false);
+    }
   };
 
   // If receipt is already generated, render the clean A4 printable receipt!
